@@ -1,0 +1,7 @@
+[user]
+	email = mardom@mailbox.org
+	name = Mario Domazet
+[color]
+	ui = auto
+[pack]
+	threads = 0
