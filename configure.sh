@@ -51,10 +51,10 @@ if [ -f ~/.vimrc ]; then
 fi
 ln -s ~/.dotfiles/vim ~/.vim
 ln -s ~/.dotfiles/vimrc ~/.vimrc
+touch ~/.viminfo
 
 # zsh files
 if [ -f ~/.zshrc ]; then
         mv ~/.zshrc ~/.config/localdotbackup/.zshrc
 fi
 ln -s ~/.dotfiles/zshrc ~/.zshrc
-
