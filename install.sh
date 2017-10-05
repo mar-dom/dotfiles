@@ -12,5 +12,5 @@ fi
 git clone https://github.com/mdomazet/dotfiles .dotfiles --recursive
 
 # install the dotfiles
-. /install.sh
+~/.dotfiles/configure.sh
 
