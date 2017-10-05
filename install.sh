@@ -25,6 +25,6 @@ echo "[*] Linking files..."
 ~/.dotfiles/configure.sh
 
 echo "[*] Changing shell to zsh..."
-chsh -s $(which zsh)
+sudo chsh -s $(which zsh) $USER
 
 echo "[*] Done!"
