@@ -1,6 +1,6 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
-PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+#PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 # If not running interactively, don't do anything
 if [[ $- != *i* ]]; then
@@ -63,7 +63,7 @@ if [ `whoami` == "root" ]; then
     C_USERCOLOR=$C_RED
 fi
 
-PS1="$C_MAGENTA[$C_USERCOLOR\u$C_WHITE@$C_GREEN\h$C_MAGENTA]$C_WHITE:$C_BLUE\w $C_WHITE$ "
+PS1="$C_MAGENTA[$C_USERCOLOR\u$C_WHITE@$C_GREEN\h$C_MAGENTA]$C_WHITE:$C_BLUE\w $C_DEFAULT$ "
 
 # show only 4 directories in the prompt
 PROMPT_DIRTRIM=4 

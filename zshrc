@@ -8,8 +8,6 @@ HIST_STAMPS="yyyy-mm-dd"
 
 #Bundles from the default repo (robbyrussell's oh-my-zsh)
 antigen bundle git
-antigen bundle debian
-antigen bundle archlinux
 antigen bundle chucknorris
 antigen bundle encode64
 antigen bundle catimg
@@ -24,7 +22,6 @@ antigen bundle svn
 antigen bundle systemd
 antigen bundle urltools
 antigen bundle z
-#antigen bundle tmux
 
 # Syntax stuff
 antigen bundle zsh-users/zsh-syntax-highlighting

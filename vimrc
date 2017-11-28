@@ -28,7 +28,8 @@ set nobackup
 set noswapfile
 set laststatus=2
 set noshowmode
-"set t_co=16
+set rnu
+set pastetoggle=<F2>
 
 " Use CTRL-S for saving, also in Insert mode
 noremap <C-S>   :update<CR>
