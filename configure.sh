@@ -92,4 +92,14 @@ if [ -d ~/.config/ranger ]; then
 fi
 ln -s ~/.dotfiles/config/ranger ~/.config/ranger
 
+# X Resources
+if [ -f ~/.xinitrc ]; then
+        mv ~/.xinitrc ~/.config/localdotbackup/.xinitrc
+fi
+ln -s ~/.dotfiles/xinitrc ~/.xinitrc
+
+if [ -f ~/.Xresources ]; then
+        mv ~/.Xresources ~/.config/localdotbackup/.Xresources
+fi
+ln -s ~/.dotfiles/Xresources ~/.Xresources
 
