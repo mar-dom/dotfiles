@@ -5,12 +5,17 @@ echo "[*] Starting customization!"
 echo "[*] Installing dependencies... (will ask for sudo password)"
 
 # install dependencies
-sudo apt-get install -y -qq htop wget curl git zsh tmux vim-nox fortune > /dev/null
-
-if [ ! $? -eq 0 ]; then
-    echo "Error: could not install dependencies!"
-    exit -1
+distro=$(gawk -F= '/^NAME/{print $2}' /etc/os-release)
+if [ $distro = "Debian" ]; then
+    sudo apt-get install -y -qq htop wget curl git zsh tmux vim-nox fortune > /dev/null
+    if [ ! $? -eq 0 ]; then
+        echo "Error: could not install dependencies!"
+        exit -1
+    fi
+else
+    echo "  [!] Please install htop, wget, curl, git, zsh, tmux, vim and fortune!"
 fi
+
 
 echo "[*] Pulling the git repo"
 # pull the dotfiles
