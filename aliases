@@ -1,7 +1,7 @@
 # vim:set ft=sh
 
 alias ls='ls --color=auto --group-directories-first -F'
-alias ll='ls -la'
+alias ll='ls -lA'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'

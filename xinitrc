@@ -13,7 +13,8 @@ setxkbmap -model thinkpad -layout de -variant nodeadkeys
 ( ( sleep 1 && /usr/bin/urxvtd -q -f -o ) & )
 
 # keep X clipboard and cutbuffer in sync
-autocutsel -selection PRIMARY &
+autocutsel -s CLIPBOARD &
+autocutsel -s PRIMARY &
 
 # Ensure dbus is either already running, or safely start it
 if [[ -z "${DBUS_SESSION_BUS_ADDRESS}" ]]; then
