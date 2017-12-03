@@ -3,7 +3,7 @@ set nocompatible
 execute pathogen#infect()
 
 syntax on
-set background=dark
+"set background=dark
 colorscheme solarized
 
 filetype plugin on
