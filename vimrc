@@ -1,35 +1,49 @@
-set nocompatible
+" Init
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-execute pathogen#infect()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'altercation/vim-colors-solarized'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'sheerun/vim-polyglot'
+    Plugin 'ryanoasis/vim-devicons'
+    Plugin 'mhinz/vim-startify'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'vim-airline/vim-airline'
+    Plugin 'vim-airline/vim-airline-themes'
+call vundle#end()            " required
+filetype plugin indent on    " required
 
-syntax on
-"set background=dark
-colorscheme solarized
-
-filetype plugin on
-filetype indent on
-
+" Sets
 set mouse-=a
-set autoindent
-set showmatch
+set encoding=utf-8
+set hidden "hiddes buffers instead of closing them
+set nobackup
+set noswapfile
+set showmatch "show search matches
 set ignorecase
 set hlsearch
-set cursorline
 set incsearch
-set encoding=utf-8
-set tabstop=8
 set expandtab
 set shiftwidth=4
 set softtabstop=4
-set ruler
-set number
-set nowrap
-set nobackup
-set noswapfile
-set laststatus=2
+set nowrap "no line wrap
+set rnu "relative line numbers
+set cursorline
 set noshowmode
-set rnu
 set pastetoggle=<F2>
+" no auto-indenting
+set noautoindent
+set nocindent
+set nosmartindent
+set indentexpr=
+filetype indent off
+filetype plugin indent off
+
+" My leader key
+let mapleader = "-"
 
 " Use CTRL-S for saving, also in Insert mode
 noremap <C-S>   :update<CR>
@@ -40,33 +54,43 @@ noremap <C-Q>   :quit!<CR>
 vnoremap <C-Q>  <C-C>:quit!<CR>
 inoremap <C-Q>  <C-O>:quit!<CR>
 
-let g:solarized_termtrans = 1
-let g:solarized_termcolors=16
+" Toggle line numbers
+function! NumberToggle()
+    if &relativenumber
+           set norelativenumber
+      else
+           set relativenumber
+      endif
+endfunction
+nnoremap <F3> :call NumberToggle()<CR>
 
+" Buffer keymaps
+function SwitchBuffer()
+  b#
+endfunction
+nmap <Tab> :call SwitchBuffer()<CR>
+" To open a new empty buffer
+nmap <leader>t :enew<cr>
+" Move to the next buffer
+nmap <leader>n :bnext<CR>
+" Move to the previous buffer
+nmap <leader>m :bprevious<CR>
+" Close the current buffer and move to the previous one
+nmap <leader>q :bp <BAR> bd #<CR>
+" Show all open buffers and their status
+nmap <leader>l :ls<CR>
+
+" Solarized Setup
+syntax on
+let g:solarized_termtrans = 1
+set background=dark
+colorscheme solarized
+
+" Nerdtree Setup
 let NERDTreeShowHidden = 1
 map <F5> :NERDTreeToggle<cr>
 
-let g:lightline = {
-      \ 'colorscheme':  'solarized',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename' , 'modified'] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'filetype': 'MyFiletype',
-      \   'fileformat': 'MyFileformat',
-      \ },
-      \ }
-
-function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
-endfunction
-
-function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
-endfunction
-
+" Startify Setup
 let g:startify_list_order = [
             \ ['   Most recently used files:'],
             \ 'files',
@@ -79,6 +103,8 @@ let g:startify_list_order = [
             \ ['   These are my commands:'],
             \ 'commands',
 \ ]
-
 let g:startify_fortune_use_unicode = 1
 
+" Airline Setup
+let g:airline_solarized_bg='dark'
+let g:airline#extensions#tabline#enabled = 1

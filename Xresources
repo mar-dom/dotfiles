@@ -34,7 +34,6 @@ URxvt.transparent:		true
 URxvt.meta8: 			false
 URxvt.shading: 			20
 URxvt.fading: 			0
-URxvt*depth:                    50 --24 
 URxvt*geometry:                 75x25
 URxvt.borderColor:              #191918
 URxvt.internalBorder:           5
@@ -64,29 +63,32 @@ URxvt.italicFont:               xft:SauceCodePro Nerd Font Mono:italic:pixelsize
 URxvt.boldItalicFont:           xft:SauceCodePro Nerd Font Mono:italic:bold:pixelsize=12:antialias=true:hinting=true
 URxvt*perl-lib:                 /usr/lib/urxvt/perl
 URxvt*perl-ext-common:          default,matcher
-URxvt.url-launcher:             /usr/bin/firefox
+URxvt.url-launcher:             /usr/bin/firefox-bin
 URxvt.matcher.button:           1
 URxvt*matcher.pattern.1:        \\bwww\\.[\\w-]+\\.[\\w./?&@#-]*[\\w/-]
 URxvt.matcher.rend.0: 	        Uline Bold fg5
-URxvt*skipBuiltinGlyphs:        true
+URxvt*skipBuiltinGlyphs:        yes
+
 
 
 !! Rofi Config
-rofi.width:		        50
-rofi.padding:		        10
+rofi.separator-style:           solid
+rofi.padding:                   5
+rofi.width:                     25
 rofi.fullscreen: 	        false
 rofi.fixed-num-lines:           true
 rofi.bw:		        1
 rofi.location:		        0
 rofi.terminal:                  urxvt
-rofi.lines:		        2
-rofi.eh:		        1
-!rofi.font:		        Channel 4 Terminus 16
+rofi.lines:		        10
+rofi.eh:		        1 
+rofi.font:		        SauceCodePro Nerd Font Mono 9
 rofi.color-enabled:             true
-rofi.color-window:              #002b37, #002b37, #003642
-rofi.color-normal:              #002b37, #819396, #002b37, #003642, #819396
-rofi.color-active:              #002b37, #008ed4, #002b37, #003642, #008ed4
-rofi.color-urgent:              #002b37, #da4281, #002b37, #003642, #da4281
+rofi.color-window:              #273238, #273238, #1e2529
+rofi.color-normal:              #273238, #c1c1c1, #273238, #394249, #ffffff
+rofi.color-active:              #273238, #80cbc4, #273238, #394249, #80cbc4
+rofi.color-urgent:              #273238, #ff1844, #273238, #394249, #ff1844
+
 
 !!! General color Config
 *background:                    S_base03
