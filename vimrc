@@ -43,7 +43,7 @@ filetype indent off
 filetype plugin indent off
 
 " My leader key
-let mapleader = "-"
+let mapleader = ","
 
 " Use CTRL-S for saving, also in Insert mode
 noremap <C-S>   :update<CR>
