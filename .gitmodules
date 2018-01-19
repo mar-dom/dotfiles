@@ -4,10 +4,3 @@
 [submodule "Vundle"]
         path = vim/bundle/Vundle.vim
         url = https://github.com/VundleVim/Vundle.vim.git
-
-#[submodule "tmux/tmux-copycat"]
-#	path = tmux/tmux-copycat
-#	url = https://github.com/tmux-plugins/tmux-copycat
-#[submodule "tmux/tmux-yank"]
-#	path = tmux/tmux-yank
-#	url = https://github.com/tmux-plugins/tmux-yank
