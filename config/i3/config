@@ -36,7 +36,6 @@ bindsym $mod+Return exec urxvtc
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+d exec --no-startup-id "rofi -modi drun,ssh -show drun -no-parse-known-hosts -disable-history"
 bindsym $mod+Tab exec --no-startup-id "rofi -modi window -show window"
 
@@ -182,7 +181,6 @@ for_window [class="Gedit"] floating enable
 
 
 # Execute all stuff
-#exec compton --config /dev/null --backend xrender --vsync opengl
 exec --no-startup-id numlockx on
 exec --no-startup-id volumeicon
 exec --no-startup-id cbatticon

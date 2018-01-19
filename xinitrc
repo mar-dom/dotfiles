@@ -43,9 +43,9 @@ if [[ -z "${DBUS_SESSION_BUS_ADDRESS}" ]]; then
     eval $(dbus-launch --sh-syntax --exit-with-session)
 fi
 
+# Start the SSH-Agent
 eval `ssh-agent`
 export SSH_AUTH_SOCK
 
+# Finaly start i3wm
 exec ck-launch-session dbus-launch --sh-syntax --exit-with-session i3
-#exec i3
-

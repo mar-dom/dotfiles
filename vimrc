@@ -42,7 +42,7 @@ set indentexpr=
 filetype indent off
 filetype plugin indent off
 
-" My leader key
+" leader key
 let mapleader = ","
 
 " Use CTRL-S for saving, also in Insert mode
@@ -108,3 +108,5 @@ let g:startify_fortune_use_unicode = 1
 " Airline Setup
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
