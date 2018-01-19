@@ -1,105 +1,73 @@
 #!/bin/bash
 
-# make backup directory
-mkdir -p .config/localdotbackup
+declare -a CONFBACKUP="~/.config/localdotbackup"
 
-# copy gitconfig
-if [ -f ~/.gitconfig ]; then
-	mv ~/.gitconfig ~/.config/localdotbackup/.gitconfig
-fi
-cp ~/.dotfiles/gitconfig ~/.gitconfig
+echo "[*] Backing up local dotfiles... "
+# make backup directory
+mkdir -p $CONFBACKUP
 
 # global aliases
-if [ -f ~/.aliases ]; then
-	mv ~/.aliases ~/.config/localdotbackup/.aliases
-fi
-ln -s ~/.dotfiles/aliases ~/.aliases
+if [ -f ~/.aliases ]; then mv ~/.aliases "$CONFBACKUP/.aliases"; fi
 
 # bash files
-if [ -f ~/.bashrc ]; then
-        mv ~/.bashrc ~/.config/localdotbackup/.bashrc
-fi
-if [ -f ~/.dir_colors ]; then
-	mv ~/.dir_colors ~/.config/localdotbackup/.dir_colors
-fi
-ln -s ~/.dotfiles/bashrc ~/.bashrc
-ln -s ~/.dotfiles/dir_colors ~/.dir_colors
+if [ -f ~/.bashrc ]; then mv ~/.bashrc "$CONFBACKUP/.bashrc"; fi
+if [ -f ~/.dir_colors ]; then mv ~/.dir_colors "$CONFBACKUP/.dir_colors"; fi
 
-# htop config
-if [ -d ~/.config/htop ]; then
-        mv ~/.config/htop/htoprc ~/.config/localdotbackup/htoprc
-        mkdir -p ~/.config/htop
-fi
-ln -s ~/.dotfiles/config/htop/htoprc ~/.config/htop/htoprc
+# htop files
+if [ -d ~/.config/htop ]; then mv ~/.config/htop/htoprc "$CONFBACKUP/htoprc"; mkdir -p ~/.config/htop; fi
 
 # tmux files
-if [ -d ~/.tmux ]; then
-        mv ~/.tmux ~/.config/localdotbackup/.tmux
-fi
-if [ -f ~/.vimrc ]; then
-        mv ~/.tmux.conf ~/.config/localdotbackup/.tmux.conf
-fi
-ln -s ~/.dotfiles/tmux ~/.tmux 
-ln -s ~/.dotfiles/tmux.conf ~/.tmux.conf
+if [ -d ~/.tmux ]; then mv ~/.tmux "$CONFBACKUP/.tmux"; fi
 
-# vim files
-if [ -d ~/.vim ]; then
-        mv ~/.vim ~/.config/localdotbackup/.vim
-fi
-if [ -f ~/.vimrc ]; then
-        mv ~/.vimrc ~/.config/localdotbackup/.vimrc
-fi
-ln -s ~/.dotfiles/vim ~/.vim
-ln -s ~/.dotfiles/vimrc ~/.vimrc
-touch ~/.viminfo
+# vimrc files
+if [ -d ~/.vim ]; then mv ~/.vim "$CONFBACKUP/.vim"; fi
+if [ -f ~/.vimrc ]; then mv ~/.vimrc "$CONFBACKUP/.vimrc"; fi
 
-# zsh files
-if [ -f ~/.zshrc ]; then
-        mv ~/.zshrc ~/.config/localdotbackup/.zshrc
-fi
-ln -s ~/.dotfiles/zshrc ~/.zshrc
+# zsh file
+if [ -f ~/.zshrc ]; then mv ~/.zshrc "$CONFBACKUP/.zshrc"; fi
 
 # local files
-if [ -d ~/.local/wallpaper ]; then
-        mkdir -p /.config/localdotbackup/local
-        mv ~/.local/wallpaper ~/.config/localdotbackup/local/wallpaper
-fi
-mkdir -p ~/.local/wallpaper/
-ln -s ~/.dotfiles/local/wallpaper/wallpaper.jpg ~/.local/wallpaper/wallpaper.jpg
+if [ -d ~/.local/wallpaper ]; then mkdir -p "$CONFBACKUP/local"; mv ~/.local/wallpaper "$CONFBACKUP/local/wallpaper"; fi
+if [ -d ~/.local/share/fonts ]; then mkdir -p "$CONFBACKUP/local/share/fonts"; mv ~/.local/share/fonts "$CONFBACKUP/local/share/fonts"; fi
 
-if [ -d ~/.local/share/fonts ]; then
-        mkdir -p /.config/localdotbackup/local/share/fonts
-        mv ~/.local/share/fonts ~/.config/localdotbackup/local/share/fonts
-fi
-mkdir -p ~/.local/share
-ln -s ~/.dotfiles/local/share/fonts ~/.local/share/fonts
+# gitconfig file
+if [ -f ~/.gitconfig ]; then mv ~/.gitconfig "$CONFBACKUP/.gitconfig"; fi
 
-# i3
-if [ -d ~/.config/i3 ]; then
-        mv ~/.config/i3 ~/.config/localdotbackup/i3
-fi
-ln -s ~/.dotfiles/config/i3 ~/.config/i3
+# i3 files
+if [ -d ~/.config/i3 ]; then mv ~/.config/i3 "$CONFBACKUP/i3"; fi
+if [ -d ~/.config/i3status ]; then mv ~/.config/i3status "$CONFBACKUP/i3status"; fi
 
-# i3status
-if [ -d ~/.config/i3status ]; then
-        mv ~/.config/i3status ~/.config/localdotbackup/i3status
-fi
-ln -s ~/.dotfiles/config/i3status ~/.config/i3status
+# ranger files
+if [ -d ~/.config/ranger ]; then mv ~/.config/ranger "$CONFBACKUP/ranger"; fi
 
-# ranger
-if [ -d ~/.config/ranger ]; then
-        mv ~/.config/ranger ~/.config/localdotbackup/ranger
-fi
-ln -s ~/.dotfiles/config/ranger ~/.config/ranger
+# X files
+if [ -f ~/.xinitrc ]; then mv ~/.xinitrc "$CONFBACKUP/.xinitrc"; fi
+if [ -f ~/.Xresources ]; then mv ~/.Xresources "$CONFBACKUP/.Xresources"; fi
 
-# X Resources
-if [ -f ~/.xinitrc ]; then
-        mv ~/.xinitrc ~/.config/localdotbackup/.xinitrc
-fi
-ln -s ~/.dotfiles/xinitrc ~/.xinitrc
+echo "[*] Installing new dotfiles... "
 
-if [ -f ~/.Xresources ]; then
-        mv ~/.Xresources ~/.config/localdotbackup/.Xresources
-fi
-ln -s ~/.dotfiles/Xresources ~/.Xresources
+ln -s aliases ~/.aliases
 
+ln -s bashrc ~/.bashrc
+ln -s dir_colors ~/.dir_colors
+ln -s config/htop/htoprc ~/.config/htop/htoprc
+ln -s tmux.conf ~/.tmux.conf
+
+ln -s vimrc ~/.vimrc
+touch ~/.viminfo
+
+ln -s zshrc ~/.zshrc
+
+mkdir -p ~/.local/{wallpaper,share}
+ln -s local/wallpaper/wallpaper.jpg ~/.local/wallpaper/wallpaper.jpg
+ln -s local/share/fonts ~/.local/share/fonts
+
+ln -s gitconfig ~/.gitconfig
+
+ln -s config/i3 ~/.config/i3
+ln -s config/i3status ~/.config/i3status
+
+ln -s config/ranger ~/.config/ranger
+
+ln -s xinitrc ~/.xinitrc
+ln -s Xresources ~/.Xresources
