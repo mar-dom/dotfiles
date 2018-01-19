@@ -1,13 +1,9 @@
-# vim:set ft=sh
-#
-
 command_exists () {
     command -v "$1" >/dev/null 2>&1
 }
-declare -a distri=''
+declare -a distro=''
 
 # Generell
-alias show-aliases='cat ~/.aliases | grep alias'
 alias ls='ls --color=auto --group-directories-first -F'
 alias ll='ls -lA'
 alias grep='grep --color=auto'
@@ -17,17 +13,12 @@ alias dmesg='dmesg --color'
 alias mv='mv -v'
 alias cp='cp -v'
 alias rm='rm -v'
+alias show-aliases='alias'
 alias show-path='echo -e ${PATH//:/\\n} | sort'
 alias show-ssh-ciphers='ssh -Q cipher'
 alias show-ssh-mac='ssh -Q mac'
 alias show-ssh-kex='ssh -Q kex'
 
-# git
-#if command_exists git; then
-    #alias gs='git status'
-    #alias gd='git diff'
-    #alias gl='git log'
-#fi
 
 # antigen
 if command_exists antigen; then
@@ -39,11 +30,11 @@ fi
 
 #  
 if command_exists lsb_release; then
-    distri=`lsb_release -i | awk '{print $3}'`
+    distro=`lsb_release -i | awk '{print $3}'`
+    alias show-rls="echo $distro"
 fi
 
-if [ $distri == "Gentoo" ];then
-    alias show-rls="echo $distri"
+if [ $distro == "Gentoo" ]; then
     alias eqf='equery f'
     alias equ='equery u'
     alias eqh='equery h'
@@ -58,9 +49,9 @@ if [ $distri == "Gentoo" ];then
     alias eqy='equery y'
     alias eqs='equery s'
     alias eqw='equery w'
-elif [ $distri == "Debian" ];then
-    alias show-rls="echo $distri"
+#elif [ $distro == "Debian" ]; then
 fi 
 
-unset distri
+unset distro
 
+# vim: set ft=sh:
