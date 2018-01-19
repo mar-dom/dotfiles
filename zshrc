@@ -1,5 +1,7 @@
 # vim:set ft=zsh
 
+PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
+
 source ~/.dotfiles/antigen/antigen.zsh
 
 # Load the oh-my-zsh's library.
@@ -7,27 +9,26 @@ antigen use oh-my-zsh
 HIST_STAMPS="yyyy-mm-dd"
 
 #Bundles from the default repo (robbyrussell's oh-my-zsh)
-antigen bundle git
-antigen bundle chucknorris
-antigen bundle encode64
-antigen bundle catimg
-antigen bundle docker
-antigen bundle github
-antigen bundle jsontools
-antigen bundle python
-antigen bundle pep8
-antigen bundle pip
-antigen bundle sudo
-antigen bundle svn
-antigen bundle systemd
-antigen bundle urltools
-antigen bundle z
+antigen bundles <<EOBUNDLES
+    git
+    chucknorris
+    encode64
+    jsontools
+    catimg
+    python
+    pep8
+    pip
+    sudo
+    svn
+    urltools
+    z
+EOBUNDLES
 
 # Syntax stuff
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 # Load the theme.
@@ -45,8 +46,31 @@ stty start undef
 # Keybindings
 bindkey "\e[1~" beginning-of-line # Home
 bindkey "\e[4~" end-of-line       # End
-bindkey -s '^[[1;5A' 'cd ..\n' # Ctrl + ↑
-bindkey -s '^[[1;5B' 'cd -\n'  # Ctrl + ↓
+#bindkey -s '^[[1;5A' 'cd ..\n' # Ctrl + ↑
+#bindkey -s '^[[1;5B' 'cd -\n'  # Ctrl + ↓
+
+# Suffix aliases
+alias -s tex=vim
+
+# Global aliases
+# references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html 
+globalias() {
+  if [[ $LBUFFER =~ '[A-Za-z0-9]+$' ]]; then #added a-z, removed first whitespace
+    zle _expand_alias
+    zle expand-word
+  fi
+  zle self-insert
+}
+zle -N globalias
+bindkey " " globalias                 # space key to expand globalalias
+bindkey "^[[Z" magic-space            # shift-tab to bypass completion
+bindkey -M isearch " " magic-space    # normal space during searches
+
+alias -g L='| less'
+alias -g cfg-make='sudo vim /etc/portage/make.conf'
+
+
+
 
 # Setup ls colors
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
@@ -64,4 +88,3 @@ fi
 if [ -f ~/.zshrc.local ]; then
     source ~/.zshrc.local
 fi
-

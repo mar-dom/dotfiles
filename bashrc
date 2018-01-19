@@ -1,6 +1,6 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
-#PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 
 # If not running interactively, don't do anything
 if [[ $- != *i* ]]; then

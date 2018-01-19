@@ -1,7 +1,8 @@
 command_exists () {
     command -v "$1" >/dev/null 2>&1
 }
-declare -a distro=''
+
+distro=""
 
 # Generell
 alias ls='ls --color=auto --group-directories-first -F'
@@ -20,21 +21,12 @@ alias show-ssh-mac='ssh -Q mac'
 alias show-ssh-kex='ssh -Q kex'
 
 
-# antigen
-if command_exists antigen; then
-    alias antupdate='antigen update'
-    alias antlist='antigen list'
-    alias antselfupdate='antigen selfupdate'
-fi
-
-
-#  
 if command_exists lsb_release; then
     distro=`lsb_release -i | awk '{print $3}'`
-    alias show-rls="echo $distro"
+    alias show-lsb="echo $distro"
 fi
 
-if [ $distro == "Gentoo" ]; then
+if [[ $distro == "Gentoo" ]]; then
     alias eqf='equery f'
     alias equ='equery u'
     alias eqh='equery h'
