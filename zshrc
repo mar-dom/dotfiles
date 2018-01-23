@@ -28,8 +28,6 @@ EOBUNDLES
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
-#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 # Load the theme.
 antigen theme agnoster
@@ -49,13 +47,16 @@ bindkey "\e[4~" end-of-line       # End
 #bindkey -s '^[[1;5A' 'cd ..\n' # Ctrl + ↑
 #bindkey -s '^[[1;5B' 'cd -\n'  # Ctrl + ↓
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+
 # Suffix aliases
 alias -s tex=vim
 
 # Global aliases
 # references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html 
 globalias() {
-  if [[ $LBUFFER =~ '[A-Za-z0-9]+$' ]]; then #added a-z, removed first whitespace
+  if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then #added a-z, removed first whitespace
     zle _expand_alias
     zle expand-word
   fi
@@ -67,7 +68,7 @@ bindkey "^[[Z" magic-space            # shift-tab to bypass completion
 bindkey -M isearch " " magic-space    # normal space during searches
 
 alias -g L='| less'
-alias -g cfg-make='sudo vim /etc/portage/make.conf'
+alias -g CFG-make='sudo vim /etc/portage/make.conf'
 
 
 
