@@ -57,13 +57,13 @@ C_BG_MAGENTA="\[\033[45m\]"     # magenta
 C_BG_CYAN="\[\033[46m\]"        # cyan
 C_BG_WHITE="\[\033[47m\]"   # base2
 
-C_USERCOLOR=$C_CYAN
+C_USERCOLOR=$C_BRCYAN
 
 if [ `whoami` == "root" ]; then
     C_USERCOLOR=$C_RED
 fi
 
-PS1="$C_MAGENTA[$C_USERCOLOR\u$C_WHITE@$C_GREEN\h$C_MAGENTA]$C_WHITE:$C_BLUE\w $C_DEFAULT$ "
+PS1="$C_BRMAGENTA[$C_USERCOLOR\u$C_BRWHITE@$C_BRGREEN\h$C_BRMAGENTA]$C_BRWHITE:$C_BRBLUE\w $C_DEFAULT$ "
 
 # show only 4 directories in the prompt
 PROMPT_DIRTRIM=4 
