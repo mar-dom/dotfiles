@@ -1,5 +1,4 @@
 # vim:set ft=zsh
-
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 
 source ~/.dotfiles/antigen/antigen.zsh
@@ -44,8 +43,6 @@ stty start undef
 # Keybindings
 bindkey "\e[1~" beginning-of-line # Home
 bindkey "\e[4~" end-of-line       # End
-#bindkey -s '^[[1;5A' 'cd ..\n' # Ctrl + ↑
-#bindkey -s '^[[1;5B' 'cd -\n'  # Ctrl + ↓
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
@@ -56,21 +53,28 @@ alias -s tex=vim
 # Global aliases
 # references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html 
 globalias() {
-  if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then #added a-z, removed first whitespace
+  if [[ $LBUFFER =~ '(c-[a-z]+)|(L)$' ]]; then
     zle _expand_alias
     zle expand-word
   fi
   zle self-insert
 }
+
 zle -N globalias
+
 bindkey " " globalias                 # space key to expand globalalias
 bindkey "^[[Z" magic-space            # shift-tab to bypass completion
 bindkey -M isearch " " magic-space    # normal space during searches
 
-alias -g L='| less'
-alias -g CFG-make='sudo vim /etc/portage/make.conf'
-
-
+alias -g L=" | less"
+alias -g c-pmake='sudo vim /etc/portage/make.conf'
+alias -g c-ppu='sudo vim /etc/portage/package.use/custom'
+alias -g c-ppa='sudo vim /etc/portage/package.accept_keywords'
+alias -g c-sync='sudo emerge --sync'
+alias -g c-emerge='sudo emerge -avuDN --with-bdeps=y @world'
+alias -g c-dispatch='sudo dispatch-conf'
+alias -g c-clean='sudo emerge --depclean'
+alias -g c-socks='AUTOSSH_DEBUG=1 autossh -M 0 -T -N -4 -p 22 -D 127.0.0.1:2101 -l adm-md -i "~/.ssh/ssh-jump-ws.id" -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" jump-ws.aisec.fraunhofer.de'
 
 
 # Setup ls colors
