@@ -1,0 +1,36 @@
+# These settings were set by the catalyst build script that automatically
+# built this stage.
+# Please consult /usr/share/portage/config/make.conf.example for a more
+# detailed example.
+CFLAGS="-march=native -O2 -pipe"
+CXXFLAGS="${CFLAGS}"
+MAKEOPTS="-j5"
+CPU_FLAGS_X86="aes avx avx2 mmx mmxext pclmul popcnt sse sse2 sse3 sse4_1 sse4_2 ssse3"
+
+# NOTE: This stage was built with the bindist Use flag enabled
+PORTDIR="/usr/portage"
+DISTDIR="/usr/portage/distfiles"
+PKGDIR="/usr/portage/packages"
+
+# Elogv
+PORTAGE_ELOG_SYSTEM="save"
+PORTAGE_ELOG_CLASSES="warn error info log qa"
+
+# This sets the language of build output to English.
+# Please keep this setting intact when reporting bugs.
+LC_MESSAGES=C
+
+# Use only a subset if Intel Microcode (not the whole package)
+MICROCODE_SIGNATURES="-s 0x000506e3"
+
+# Gentoo Mirror
+GENTOO_MIRRORS="http://mirror.netcologne.de/gentoo/"
+
+# Software Flags
+INPUT_DEVICES="evdev"
+VIDEO_CARDS="virtualbox"
+ALSA_CARDS="intel8x0m"
+
+L10N="de en"
+USE="alsa pulseaudio dbus consolekit gif tiff jpeg png vim-syntax zsh-completion bash-completion -ipv6 -kde -gnome -bindist -qt4 -modemmanager"
+

@@ -26,8 +26,8 @@ ethernet enp0s3 {
 
 ethernet vpn0 {
         # if you use %speed, i3status requires root privileges
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_up = "VPN: %ip (%speed)"
+        format_down = "VPN: down"
 }
 
 tztime local {
