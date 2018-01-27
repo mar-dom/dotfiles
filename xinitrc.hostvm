@@ -1,0 +1,21 @@
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
+
+# Run Urxvt in daemon mode
+#( ( sleep 1 && /usr/bin/urxvtd -q -f -o ) & )
+
+# Ensure dbus is either already running, or safely start it
+if [[ -z "${DBUS_SESSION_BUS_ADDRESS}" ]]; then
+    eval $(dbus-launch --sh-syntax --exit-with-session)
+fi
+
+# Start VBox
+VBoxClient --clipboard 
+VBoxClient --draganddrop 
+VBoxClient --display
+
+# Start the SSH-Agent
+eval `ssh-agent`
+export SSH_AUTH_SOCK
+
+# Finaly start i3wm
+exec ck-launch-session dbus-launch --sh-syntax --exit-with-session i3
