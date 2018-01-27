@@ -1,0 +1,96 @@
+# vim:set ft=zsh
+PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
+
+source ~/.dotfiles/antigen/antigen.zsh
+
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+HIST_STAMPS="yyyy-mm-dd"
+
+#Bundles from the default repo (robbyrussell's oh-my-zsh)
+antigen bundles <<EOBUNDLES
+    git
+    chucknorris
+    encode64
+    jsontools
+    catimg
+    python
+    pep8
+    pip
+    sudo
+    svn
+    urltools
+    z
+EOBUNDLES
+
+DEFAULT_USER="domazet"
+
+# Syntax stuff
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+
+# Load the theme.
+antigen theme agnoster
+
+# Apply settings
+antigen apply
+
+# Turn off ctrl+s
+stty ixany
+stty ixoff -ixon
+stty stop undef
+stty start undef
+
+# Keybindings
+bindkey "\e[1~" beginning-of-line # Home
+bindkey "\e[4~" end-of-line       # End
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+
+# Suffix aliases
+alias -s tex=vim
+
+# Global aliases
+# references: http://blog.patshead.com/2012/11/automatically-expaning-zsh-global-aliases---simplified.html 
+globalias() {
+  if [[ $LBUFFER =~ '(c-[a-z]+)$' ]]; then
+    zle _expand_alias
+    zle expand-word
+  fi
+  zle self-insert
+}
+
+zle -N globalias
+
+bindkey " " globalias                 # space key to expand globalalias
+bindkey "^[[Z" magic-space            # shift-tab to bypass completion
+bindkey -M isearch " " magic-space    # normal space during searches
+
+alias -g c-pmake='sudo vim /etc/portage/make.conf'
+alias -g c-ppu='sudo vim /etc/portage/package.use/custom'
+alias -g c-ppa='sudo vim /etc/portage/package.accept_keywords'
+alias -g c-sync='sudo emerge --sync'
+alias -g c-emerge='sudo emerge -avuDN --with-bdeps=y @world'
+alias -g c-dispatch='sudo dispatch-conf'
+alias -g c-clean='sudo emerge --depclean'
+alias -g c-socks='AUTOSSH_DEBUG=1 autossh -M 0 -T -N -4 -p 22 -D 127.0.0.1:2101 -l adm-md -i "~/.ssh/ssh-jump-ws.id" -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" jump-ws.aisec.fraunhofer.de'
+
+
+# Setup ls colors
+export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
+
+if [ -x /usr/bin/dircolors ]; then
+    eval `dircolors --bourne-shell ~/.dir_colors`
+fi
+
+# Load aliases
+if [ -f ~/.aliases ]; then
+    source ~/.aliases
+fi
+
+# Run local config
+if [ -f ~/.zshrc.local ]; then
+    source ~/.zshrc.local
+fi
