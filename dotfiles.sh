@@ -89,7 +89,7 @@ function vim_install ( )
 
 function ssh_install ( )
 {
-    if [ -f SFILES[~/.ssh/config] ]; then
+    if [ -f $dotdir/ssh-config/config ]; then
         # syncronise dotdir directory
         echo "  [+] SSH install..."
         rm -rf ~/.ssh
@@ -98,7 +98,7 @@ function ssh_install ( )
     else
         # create default ssh-config 
         mkdir -p ~/.ssh
-        cp SFILES[~/.ssh/config] .ssh/config
+        cp $SFILES[~/.ssh/config] .ssh/config
     fi
 }
 
@@ -117,13 +117,14 @@ function server_check ( )
                 echo "  [+] File '$item' is not identical with '${SFILES[$item]}'"
                 difffiles="$difffiles --diff $item ${SFILES[$item]}"
              fi
-        elif [ $item == "~/.zshrc" ]; then
+        elif [ $item == "$HOME/.zshrc" ]; then
             # zshrc      does not exist
             antigen_install
-        elif [ $item == "~/.vimrc" ]; then
+        elif [ $item == "$HOME/.vimrc" ]; then
             # vimrc      does not exist
             vim_install
-        elif [ $item == "~/.ssh/config" ]; then
+        elif [ $item == "$HOME/.ssh/config" ]; then
+            echo "[D] ssh $item"
             # ssh/config does not exist
             ssh_install
         elif [ -d $item ]; then
