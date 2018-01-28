@@ -1,7 +1,7 @@
 # vim:set ft=zsh
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 
-source ~/.dotfiles/antigen/antigen.zsh
+source ~/.antigen/antigen.zsh
 
 # Load the oh-my-zsh's library.
 antigen use oh-my-zsh

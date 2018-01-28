@@ -59,31 +59,29 @@ function full_install ( )
 # but only server dot files will be copied
 function server_install ( )
 {    
+    # remove old stuff
+    rm -rf ~/{.aliases,.bashrc,.dir_colors,.gitconfig,.tmux.conf,.tmux, .zshrc, .vimrc, .vim}
+
     antigen_install;
     vim_install;
     ssh_install;
 
-    # remove old stuff
-    rm -rf ~/{.aliases,.bashrc,.dir_colors,.gitconfig,.tmux.conf,.tmux}
-    cp $dotdir/home/aliases     ~/.aliases
-    cp $dotdir/home/bashrc      ~/.bashrc
-    cp $dotdir/home/dir_colors  ~/.dir_colors 
-    cp $dotdir/home/gitconfig   ~/.gitconfig
-    cp $dotdir/home/tmux.conf   ~/.tmux.conf
+    for item in "${!SFILES[@]}"; do
+        cp ${SFILES[$item]} $item
+    done
 }
 
 function antigen_install ( )
 {
     echo "Antigen install..."
-    rm -rf ~/.antigen ~/.zshrc
+    
     git clone https://github.com/zsh-users/antigen.git ~/.antigen
-    cp  FILES['~/.zshrc'] ~/.zshrc
 }
     
 function vim_install ( )
 {
-    echo "Vundle install..."
-    rm -rf ~/.vim ~/.vimrc
+    echo "  [+] Vundle install..."
+    
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     cp  $dotdir/home/vimrc ~/.vimrc
     vim -c 'PluginInstall' -c 'qa!'
@@ -91,80 +89,121 @@ function vim_install ( )
 
 function ssh_install ( )
 {
-    if [ -f $dotfiles/ssh-config/config ]; then
-        echo "SSH install..."
-        if [ -d ~/.ssh ]; then 
-            mv ~/.ssh ~/.ssh.orig; 
-        fi
+    if [ -f SFILES[~/.ssh/config] ]; then
+        # syncronise dotdir directory
+        echo "  [+] SSH install..."
+        rm -rf ~/.ssh
         cp -rf $dotdir/ssh-config ~/.ssh
         chmod 0600 ~/.ssh/*.id
     else
+        # create default ssh-config 
         mkdir -p ~/.ssh
-        cp $dotfiles/home/ssh_config .ssh/config
+        cp SFILES[~/.ssh/config] .ssh/config
     fi
-}   
+}
+
+function server_check ( )
+{ 
+    echo "[*] Starting Server dotfiles check..."
+    declare -g DIFF=`if [ -x "$(command -v meld)"  ]; then echo "meld -n" ; else echo "vimdiff"; fi`
+    
+    #.zshrc .tmux/ .dir_colors .bashrc .vimrc .aliases .gitconfig .ssh/config .tmux.conf
+    for item in "${!SFILES[@]}"; do
+        # local files = $item
+        # repo files  = ${SFILES[$item]
+        #echo "[Debug] $item     ${SFILES[$item]}"
+        if [ -f $item ]; then
+            if ! cmp -s $item ${SFILES[$item]}; then 
+                echo "  [+] File '$item' is not identical with '${SFILES[$item]}'"
+                difffiles="$difffiles --diff $item ${SFILES[$item]}"
+             fi
+        elif [ $item == "~/.zshrc" ]; then
+            # zshrc      does not exist
+            antigen_install
+        elif [ $item == "~/.vimrc" ]; then
+            # vimrc      does not exist
+            vim_install
+        elif [ $item == "~/.ssh/config" ]; then
+            # ssh/config does not exist
+            ssh_install
+        elif [ -d $item ]; then
+            # this only affects tmux
+            #echo "[Debug] Direcotry '$item' is being syncronised with '${SFILES[$item]}'"
+            rsync -aR ${SFILES[$item]} $item > /dev/null 2>&1
+        else
+            echo "  [-] '$item' does not exist"
+            cp -rf ${SFILES[$item]} $item
+         fi
+    done
+    echo "[*] done!"
+}
 
 
 function main ()
 {
     declare -g hostname=`hostname` DIFF="vimdiff" dotdir="$HOME/.dotfiles"
-    declare -Ag FILES
+    declare -Ag SFILES DFILES GFILES
+    declare -a difffiles=""
 
     # server files
-    FILES['~/.aliases']="$dotdir/home/aliases"
-    FILES['~/.bashrc']="$dotdir/home/bashrc"
-    FILES['~/.dir_colors']="$dotdir/home/dir_colors"
-    FILES['~/.gitconfig']="$dotdir/home/gitconfig"
-    FILES['~/.zshrc']="$dotdir/home/zshrc"
-    FILES['~/.vimrc']="$dotdir/home/vimrc"
-    FILES['~/.tmux.conf']="$dotdir/home/tmux.conf"
+    SFILES[~/.aliases]="$dotdir/home/aliases"
+    SFILES[~/.bashrc]="$dotdir/home/bashrc"
+    SFILES[~/.dir_colors]="$dotdir/home/dir_colors"
+    SFILES[~/.gitconfig]="$dotdir/home/gitconfig"
+    SFILES[~/.zshrc]="$dotdir/home/zshrc"
+    SFILES[~/.vimrc]="$dotdir/home/vimrc"
+    SFILES[~/.tmux.conf]="$dotdir/home/tmux.conf"
+    SFILES[~/.tmux/]="$dotdir/home/tmux/"
     
     if [ -f $dotdir/ssh-config/config ]; then
-        FILES['~/.ssh/config']="$dotdir/ssh-config/config"
+        SFILES[~/.ssh/config]="$dotdir/ssh-config/config"
     else
-        FILES['~/.ssh/config']="$dotdir/home/ssh_config"
+        SFILES[~/.ssh/config]="$dotdir/home/ssh_config"
     fi
 
     # desktop files
-    FILES['~/.Xresources']="$dotdir/home/.Xresources"
-    FILES['~/.Xinitrc']="$dotdir/home/.xinitrc.$hostname"
-    FILES['~/.config/i3status/config']="$dotdir/config/i3status/config.$hostname"
-    FILES['~/.config/i3/config']="$dotdir/config/i3/config"
-    FILES['~/.config/dunst/dunstrc']="$dotdir/config/dunst/dunstrc"
-    FILES['~/.config/htop/htoprc']="$dotdir/config/htop/htoprc"
-    FILES['~/.config/compton.conf']="$dotdir/config/compton.conf"
-    FILES['~/.config/rofi/rofi.conf']="$dotdir/config/rofi/rofi.conf"
-    FILES['~/.config/ranger/rc.conf']="$dotdir/config/ranger/rc.conf"
-    FILES['~/.config/ranger/commands.py']="$dotdir/config/ranger/commands.py"
-    FILES['~/.config/ranger/rifle.conf']="$dotdir/config/ranger/rifle.conf"
-    FILES['~/.local/wallpaper']="$dotdir/local/wallpaper"
-    FILES['~/.local/share/fonts']="$dotdir/local/fonts"
+    DFILES['~/.Xresources']="$dotdir/home/.Xresources"
+    DFILES['~/.Xinitrc']="$dotdir/home/.xinitrc.$hostname"
+    DFILES['~/.config/i3status/config']="$dotdir/config/i3status/config.$hostname"
+    DFILES['~/.config/i3/config']="$dotdir/config/i3/config"
+    DFILES['~/.config/dunst/dunstrc']="$dotdir/config/dunst/dunstrc"
+    DFILES['~/.config/htop/htoprc']="$dotdir/config/htop/htoprc"
+    DFILES['~/.config/compton.conf']="$dotdir/config/compton.conf"
+    DFILES['~/.config/rofi/rofi.conf']="$dotdir/config/rofi/rofi.conf"
+    DFILES['~/.config/ranger/rc.conf']="$dotdir/config/ranger/rc.conf"
+    DFILES['~/.config/ranger/commands.py']="$dotdir/config/ranger/commands.py"
+    DFILES['~/.config/ranger/rifle.conf']="$dotdir/config/ranger/rifle.conf"
+    DFILES['~/.local/wallpaper']="$dotdir/local/wallpaper"
+    DFILES['~/.local/share/fonts']="$dotdir/local/fonts"
 
     # Gentoo files
-    FILES['/etc/inittab']="$dotdir/etc/inittab.$hostname"
-    FILES['/etc/sudoers']="$dotdir/etc/sudoers"
-    FILES['/etc/locale.gen']="$dotdir/etc/locale.gen"
-    FILES['/etc/env.d/02locale']="$dotdir/02locale"
-    FILES['/etc/dispatch-conf.conf']="$dotdir/etc/dispatch-conf.conf"
-    FILES['/etc/portage/postsync.d/eix']="$dotdir/etc/eix.$hostname"
-    FILES['/etc/portake/make.conf,']="$dotdir/etc/make.conf.$hostname"
-    FILES['/etc/portage/package.use/custom']="$dotdir/etc/custom.$hostname"
-    FILES['/etc/portage/package.accept_keywords']="$dotdir/package.accept_keywords.$hostname"
-    FILES['/var/lib/portage/world']="$dotdir/var/world.$hostname"
-
-#    echo ${FILES['/etc/inittab']} = gitfile
-
-
+    GFILES['/etc/inittab']="$dotdir/etc/inittab.$hostname"
+    GFILES['/etc/sudoers']="$dotdir/etc/sudoers"
+    GFILES['/etc/locale.gen']="$dotdir/etc/locale.gen"
+    GFILES['/etc/env.d/02locale']="$dotdir/02locale"
+    GFILES['/etc/dispatch-conf.conf']="$dotdir/etc/dispatch-conf.conf"
+    GFILES['/etc/portage/postsync.d/eix']="$dotdir/etc/eix.$hostname"
+    GFILES['/etc/portake/make.conf,']="$dotdir/etc/make.conf.$hostname"
+    GFILES['/etc/portage/package.use/custom']="$dotdir/etc/custom.$hostname"
+    GFILES['/etc/portage/package.accept_keywords']="$dotdir/package.accept_keywords.$hostname"
+    GFILES['/var/lib/portage/world']="$dotdir/var/world.$hostname"
 
 
     case $modi in
-        -fi | --fullinstall )   full_install
+        -fi | --fullinstall )   #full_install
                                 ;;
-        -si | --serverinstall ) server_install
+                                
+        -si | --serverinstall ) #server_install
                                 ;;
-        -fc | --fullcheck )     full_check
+                                
+        -fc | --fullcheck )     #full_check
                                 ;;
+                                
         -sc | --servercheck )   server_check
+                                if [ "$difffiles" != "" ]; then 
+                                    nohub $DIFF $difffiles >/dev/null 2>&1 &
+                                fi
+                                
                                 ;;
         * )                     echo "Unknown operator"
                                 exit 1
@@ -185,39 +224,6 @@ else
 fi
 
 ##############################################################################
-# Both files exist
-# abolute paths to file
-function check ( )
-{
-    $localf=$1
-    $repof=$2
-    if $3; then $DIFF="sudo $DIFF"; fi
-    if ! cmp -s $localf $repof; then $DIFF $localf $repof; fi
-}
-
-function server_check ( )
-{
-    DIFF=`if [ -x "$(command -v meld)"  ]; then echo "meld -n --diff" ; else echo "vimdiff"; fi`
-
-    # server files first,
-    # if not exists => copy
-    if [ -f ~/.aliases      ];  then check "~/.aliases",     "$dotdir/home/aliases" ; else cp $dotdir/home/aliases ~/.aliases;        fi
-    if [ -f ~/.bashrc       ];  then check ( ~/.bashrc,      $dotdir/home/bashrc );      else cp $dotdir/home/bashrc ~/.bashrc;          fi
-    if [ -f ~/.dir_colors   ];  then check ( ~/.dir_colors,  $dotdir/home/dir_colors );  else cp $dotdir/home/dir_colors ~/.dir_colors;  fi
-    if [ -f ~/.gitconfig    ];  then check ( ~/.gitconfig,   $dotdir/home/gitconfig );   else cp $dotdir/home/gitconfig ~/.gitconfig;    fi
-    if [ -f ~/.zshrc        ];  then check ( ~/.zshrc,       $dotdir/home/zshrc );       else antigen_install;                           fi
-    if [ -f ~/.vimrc        ];  then check ( ~/.vimrc,       $dotdir/home/vimrc );       else vim_install;                               fi
-    if [ -f ~/.tmux.conf    ];  then check ( ~/.tmux.conf,   $dotdir/home/tmux.conf );   else cp $dotdir/home/tmux.conf ~/.tmux.conf;    fi
-    if [ -f ~/.ssh/config   ];  then
-        if [ -f $dotdir/ssh-config/config ]]; then 
-            check( ~/.ssh/config, $dotdir/ssh-config/config); 
-        else
-            check( ~/.ssh/config, $dotdir/home/ssh_config); 
-        fi
-    else
-        ssh_install;
-    fi
-}
 
 function full_check ()
 {
