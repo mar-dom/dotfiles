@@ -18,7 +18,10 @@ app-portage/elogv
 app-portage/gentoolkit
 app-portage/layman
 app-shells/bash-completion
+app-shells/gentoo-zsh-completions
 app-shells/tmux-bash-completion
+app-shells/zsh-completions
+app-text/tree
 dev-java/oracle-jre-bin
 dev-lang/sassc
 dev-python/pyliblzma
@@ -35,6 +38,7 @@ media-libs/mesa
 media-sound/alsamixergui
 media-sound/volumeicon
 net-analyzer/nmap
+net-dns/bind-tools
 net-firewall/ufw
 net-firewall/ufw-frontends
 net-im/pidgin
@@ -52,6 +56,7 @@ sys-apps/qingy
 sys-boot/grub:2
 sys-devel/autoconf
 sys-devel/automake
+sys-devel/gettext
 sys-firmware/intel-microcode
 sys-fs/dosfstools
 sys-kernel/gentoo-sources

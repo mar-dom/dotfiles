@@ -12,7 +12,7 @@ function command_exists ( )
 
 function usage ( )
 {
-    echo "Usage: dotfiles.sh [-fi | --fullinstall] | [-si | --serverinstall] | [-fc | --fullcheck] | [-sc | --servercheck] "
+    echo "Usage: dotfiles.sh [ --fullclean ] | [ --serverclean ] | [ -fc | --fullcheck ] | [ -sc | --servercheck ] "
 }
 
 function check_tools ( )
@@ -246,10 +246,10 @@ function main ()
     declare_vars;
 
     case $modi in
-        -fi | --fullinstall )   #full_install
+        --fullclean   )         #full_install
                                 ;;
                                 
-        -si | --serverinstall ) #server_install
+        --serverclean )         #server_install
                                 ;;
                                 
         -fc | --fullcheck )     full_check

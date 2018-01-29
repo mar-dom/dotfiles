@@ -26,9 +26,9 @@ exec --no-startup-id numlockx on
 exec --no-startup-id volumeicon
 exec --no-startup-id nm-applet
 exec --no-startup-id hsetroot -fill ~/.local/wallpaper/wallpaper1.jpg
-exec --no-startup-id seafile-applet
-exec --no-startup-id keepass
-exec --no-startup-id pidgin
+#exec --no-startup-id seafile-applet
+#exec --no-startup-id keepass
+#exec --no-startup-id pidgin
 
 # Basic Bindings
 bindsym $mod+Return exec --no-startup-id st
@@ -177,3 +177,4 @@ for_window [class="File-roller"] floating enable
 for_window [class="Shutter"] floating enable
 for_window [class="com-sun-javaws-Main"] floating enable
 for_window [class="Gedit"] floating enable
+for_window [class="Meld"] floating enable
