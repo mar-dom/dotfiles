@@ -61,7 +61,7 @@ function declare_vars ( )
 
     # Gentoo files
     GFILES[/etc/inittab]="$dotdir/etc/inittab.$hostname"
-    GFILES[/etc/sudoers]="$dotdir/etc/sudoers"
+#    GFILES[/etc/sudoers]="$dotdir/etc/sudoers"
     GFILES[/etc/locale.gen]="$dotdir/etc/locale.gen"
     GFILES[/etc/env.d/02locale]="$dotdir/etc/02locale"
     GFILES[/etc/dispatch-conf.conf]="$dotdir/etc/dispatch-conf.conf"
@@ -73,49 +73,26 @@ function declare_vars ( )
 }
 
 # Clean Installation
-# Delete all local files and copy all repo files
-function full_install ( )
+function full_clean ( )
 {
-    server_install
+    echo "[+] Removing all Desktop dotfiles..."
 
     # remove old stuff
     rm -rf ~/{.xinitrc,.Xresources,.xsession,.config/dunst,.config/htop,.config/i3,.config/i3status,.config/ranger,.config/rofi,.config/compton.conf,.local/wallpaper,.local/share/fonts} -rf
-
-    cp $dotdir/home/Xresources          ~/.Xresources
-    cp $dotdir/home/xinitrc.$hostname   ~/.xinitrc
-    ln -s ~/.xinitrc                    ~/.xsession
-    
-    mkdir -p ~/.config
-    cp $dotdir/home/config/dunst        ~/.config/dunst -rf
-    cp $dotdir/home/config/htop         ~/.config/htop -rf
-    cp $dotdir/home/config/i3           ~/.config/i3 -rf
-    mkdir -p ~/.config/i3status
-    cp $dotdir/home/config/i3status/config.$hostname \
-                                        ~/.config/i3status/config
-    cp $dotdir/home/config/ranger       ~/.config/ranger -rf
-    cp $dotdir/home/config/rofi         ~/.config/rofi -rf
-    cp $dotdir/home/config/compton.conf ~/.config/compton.conf
-    
-    mkdir -p ~/.local/share
-    cp $dotdir/home/local/wallpaper     ~/.local/wallpaper -rf
-    cp $dotdir/home/local/fonts         ~/.local/share/fonts -rf
     fc-cache -fv
+
+    echo "[*] done!"
 }
 
-# similiar to full_install
-# but only server dot files will be copied
-function server_install ( )
+function server_clean ( )
 {    
+    echo "[+] Removing all Desktop dotfiles..."
+
     # remove old stuff
-    rm -rf ~/{.aliases,.bashrc,.dir_colors,.gitconfig,.tmux.conf,.tmux, .zshrc, .vimrc, .vim}
+    rm -rf ~/{.aliases,.bashrc,.dir_colors,.gitconfig,.tmux.conf,.tmux,.zshrc,.vimrc,.vim, .antigen}
 
-    antigen_install;
-    vim_install;
-    ssh_install;
-
-    for item in "${!SFILES[@]}"; do
-        cp ${SFILES[$item]} $item
-    done
+    echo "[?] Please manually clean your ~/.ssh directory!"
+    echo "[*] done!"
 }
 
 function antigen_install ( )
@@ -202,7 +179,7 @@ function server_check ( )
 
 function full_check ()
 {
-    #server_check;
+    server_check;
 
     echo "[+] Starting Desktop dotfiles check..."
     
