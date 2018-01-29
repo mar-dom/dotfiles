@@ -1,0 +1,46 @@
+# Generall
+sys-devel/* ~amd64
+sys-firmware/* ~amd64
+sys-process/* ~amd64
+sys-kernel/linux-firmware ~amd64
+
+# Mozilla
+mail-client/thunderbird-bin ~amd64
+www-client/firefox-bin ~amd64
+
+# Seafile
+net-libs/ccnet ~amd64
+net-misc/seafile ~amd64
+net-misc/seafile-client ~amd64
+net-libs/libsearpc ~amd64
+
+# SmartCard
+sys-apps/pcsc-lite ~amd64
+sys-apps/ifd-gempc ~amd64
+sys-apps/pcsc-tools ~amd64
+app-crypt/ccid ~amd64
+dev-perl/pcsc-perl ~amd64
+
+# Virtualbox
+app-emulation/virtualbox ~amd64
+app-emulation/virtualbox-modules ~amd64
+
+# Apps
+net-analyzer/nmap ~amd64
+net-im/pidgin ~amd64
+net-misc/freerdp ~amd64
+x11-wm/i3-gaps ~amd64
+x11-misc/shutter ~amd64
+x11-misc/rofi ~amd64
+x11-terms/rxvt-unicode ~amd64
+
+
+# Libs
+media-libs/mesa ~amd64
+dev-lang/mono ~amd64
+=app-shells/tmux-bash-completion-9999 **
+virtual/rust ~amd64
+dev-lang/rust ~amd64
+dev-util/cargo ~amd64
+games-misc/cowsay ~amd64
+x11-libs/libdrm ~amd64

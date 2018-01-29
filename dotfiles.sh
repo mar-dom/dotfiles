@@ -1,6 +1,6 @@
 #!/bin/bash
 # set filetype=sh
-declare -a TOOLS=( git vim vimdiff fortune tmux zsh htop rsync sudo )
+declare -a TOOLS=( git vim vimdiff fortune tmux zsh htop rsync sudo lsb_release )
 declare -g DIFF=`if [ -x "$(command -v meld)"  ]; then echo "meld -n" ; else echo "vimdiff"; fi`
 declare -A SFILES DFILES GFILES
 declare -a difffiles
@@ -25,6 +25,51 @@ function check_tools ( )
         fi
     done
 
+}
+
+function declare_vars ( )
+{
+    # server files
+    SFILES[~/.aliases]="$dotdir/home/aliases"
+    SFILES[~/.bashrc]="$dotdir/home/bashrc"
+    SFILES[~/.dir_colors]="$dotdir/home/dir_colors"
+    SFILES[~/.gitconfig]="$dotdir/home/gitconfig"
+    SFILES[~/.zshrc]="$dotdir/home/zshrc"
+    SFILES[~/.vimrc]="$dotdir/home/vimrc"
+    SFILES[~/.tmux.conf]="$dotdir/home/tmux.conf"
+    
+    if [ -f $dotdir/ssh-config/config ]; then
+        SFILES[~/.ssh/config]="$dotdir/ssh-config/config"
+    else
+        SFILES[~/.ssh/config]="$dotdir/home/ssh_config"
+    fi
+
+    # desktop files
+    DFILES[~/.Xresources]="$dotdir/home/Xresources"
+    DFILES[~/.xinitrc]="$dotdir/home/xinitrc.$hostname"
+    DFILES[~/.config/i3status/config]="$dotdir/home/config/i3status/config.$hostname"
+    DFILES[~/.config/i3/config]="$dotdir/home/config/i3/config"
+    DFILES[~/.config/dunst/dunstrc]="$dotdir/home/config/dunst/dunstrc"
+    DFILES[~/.config/htop/htoprc]="$dotdir/home/config/htop/htoprc"
+    DFILES[~/.config/compton.conf]="$dotdir/home/config/compton.conf"
+    DFILES[~/.config/rofi/config]="$dotdir/home/config/rofi/config"
+    DFILES[~/.config/ranger/rc.conf]="$dotdir/home/config/ranger/rc.conf"
+    DFILES[~/.config/ranger/commands.py]="$dotdir/home/config/ranger/commands.py"
+    DFILES[~/.config/ranger/rifle.conf]="$dotdir/home/config/ranger/rifle.conf"
+    DFILES[~/.local/wallpaper]="$dotdir/home/local/wallpaper"
+    DFILES[~/.local/share/fonts]="$dotdir/home/local/fonts"
+
+    # Gentoo files
+    GFILES[/etc/inittab]="$dotdir/etc/inittab.$hostname"
+    GFILES[/etc/sudoers]="$dotdir/etc/sudoers"
+    GFILES[/etc/locale.gen]="$dotdir/etc/locale.gen"
+    GFILES[/etc/env.d/02locale]="$dotdir/etc/02locale"
+    GFILES[/etc/dispatch-conf.conf]="$dotdir/etc/dispatch-conf.conf"
+    GFILES[/etc/portage/postsync.d/eix]="$dotdir/etc/eix"
+    GFILES[/etc/portage/make.conf]="$dotdir/etc/make.conf.$hostname"
+    GFILES[/etc/portage/package.use/custom]="$dotdir/etc/custom.$hostname"
+    GFILES[/etc/portage/package.accept_keywords]="$dotdir/etc/package.accept_keywords.$hostname"
+    GFILES[/var/lib/portage/world]="$dotdir/var/world.$hostname"
 }
 
 # Clean Installation
@@ -75,7 +120,7 @@ function server_install ( )
 
 function antigen_install ( )
 {
-    echo "Antigen install..."
+    echo "  [+] Antigen install..."
     
     git clone https://github.com/zsh-users/antigen.git ~/.antigen
 }
@@ -91,9 +136,10 @@ function vim_install ( )
 
 function ssh_install ( )
 {
+    echo "  [+] SSH install..."
+
     if [ -f $dotdir/ssh-config/config ]; then
         # syncronise dotdir directory
-        echo "  [+] SSH install..."
         rm -rf ~/.ssh
         cp -rf $dotdir/ssh-config ~/.ssh
         chmod 0600 ~/.ssh/*.id
@@ -104,9 +150,16 @@ function ssh_install ( )
     fi
 }
 
+function tmux_install ( )
+{
+    echo "  [+] tmux install..."
+
+    # git clone tmux repos into ~/.tmux
+}
+
 function server_check ( )
 { 
-    echo "[*] Starting Server dotfiles check..."
+    echo "[+] Starting Server dotfiles check..."
     
     #.zshrc .tmux/ .dir_colors .bashrc .vimrc .aliases .gitconfig .ssh/config .tmux.conf
     for item in "${!SFILES[@]}"; do
@@ -115,23 +168,30 @@ function server_check ( )
         #echo "[Debug] $item     ${SFILES[$item]}"
         if [ -f $item ]; then
             if ! cmp -s $item ${SFILES[$item]}; then 
-                echo "  [+] File '$item' is not identical with '${SFILES[$item]}'"
-                difffiles="$difffiles --diff $item ${SFILES[$item]}"
+                echo "  [+] File '$item' is not identical with '${SFILES[$item]}'... Staging for diff!"
+                if [ "$DIFF" == "meld -n" ]; then 
+                    difffiles="$difffiles --diff $item ${SFILES[$item]}"
+                else
+                    difffiles+=("$item ${SFILES[$item]}")
+                 fi
              fi
         elif [ $item == "$HOME/.zshrc" ]; then
             # zshrc      does not exist
             antigen_install
+            cp ${SFILES[$item]} $item
         elif [ $item == "$HOME/.vimrc" ]; then
             # vimrc      does not exist
             vim_install
+            cp  ${SFILES[$item]} $item
+            vim -c 'PluginInstall' -c 'qa!'
         elif [ $item == "$HOME/.ssh/config" ]; then
-            echo "[D] ssh $item"
             # ssh/config does not exist
             ssh_install
-        elif [ -d $item ]; then
+        elif [ -d $item == "$HOME/.tmux.conf" ]; then
             # this only affects tmux
-            #echo "[Debug] Direcotry '$item' is being syncronised with '${SFILES[$item]}'"
-            rsync -aR ${SFILES[$item]} $item > /dev/null 2>&1
+            #rsync -aR ${SFILES[$item]} $item > /dev/null 2>&1
+            tmux_install
+            cp  ${SFILES[$item]} $item
         else
             echo "  [-] '$item' does not exist"
             cp -rf ${SFILES[$item]} $item
@@ -140,54 +200,73 @@ function server_check ( )
     echo "[*] done!"
 }
 
+function full_check ()
+{
+    #server_check;
+
+    echo "[+] Starting Desktop dotfiles check..."
+    
+    mkdir -p ~/.config/{i3status,i3,rofi,dunst,ranger,htop}
+    mkdir -p ~/.local/share
+
+    for item in "${!DFILES[@]}"; do
+        # local files = $item
+        # repo files  = ${SFILES[$item]
+        #echo "[Debug] $item     ${DFILES[$item]}"
+        if [ -f $item ]; then
+            if ! cmp -s $item ${DFILES[$item]}; then 
+                echo "  [+] File '$item' is not identical with '${DFILES[$item]}'... Staging for diff!"
+                if [ "$DIFF" == "meld -n" ]; then 
+                    difffiles="$difffiles --diff $item ${DFILES[$item]}"
+                else
+                    difffiles+=("$item ${DFILES[$item]}")
+                 fi
+             fi
+        elif [[ $item == "$HOME/.local/share/fonts" || $item == "$HOME/.local/wallpaper" ]]; then
+            rsync -a --delete "${DFILES[$item]}/" "$item/" #>/dev/null 2>&1 
+        else
+            echo "  [-] '$item' does not exist"
+            cp -rf ${DFILES[$item]} $item
+         fi
+    done
+
+    echo "[*] done!"
+
+
+    echo "[+] Starting Distro dotfiles check..."
+
+    distro=`lsb_release -i | awk '{print $3}'`
+    if   [ $distro == "Gentoo" ]; then
+        
+        for item in "${!GFILES[@]}"; do
+            if [ -f $item ]; then
+                if ! cmp -s $item ${GFILES[$item]}; then 
+                    echo "  [+] File '$item' is not identical with '${GFILES[$item]}'... Staging for diff!"
+                    if [ "$DIFF" == "meld -n" ]; then 
+                        difffiles="$difffiles --diff $item ${GFILES[$item]}"
+                    else
+                        difffiles+=("$item ${GFILES[$item]}")
+                     fi
+                 fi
+            #elif [[ $item == "$HOME/.local/share/fonts" || $item == "$HOME/.local/wallpaper" ]]; then
+                #rsync -a --delete "${DFILES[$item]}/" "$item/" #>/dev/null 2>&1 
+            else
+                echo "  [-] '$item' does not exist"
+             #   cp -rf ${DFILES[$item]} $item
+             fi
+        done
+    elif [ $distro == "Debian" ]; then
+            $distro=""
+    fi
+
+    echo "[*] done!"
+}
 
 function main ()
 {
     declare -g hostname=`hostname` dotdir="$HOME/.dotfiles"
-
-    # server files
-    SFILES[~/.aliases]="$dotdir/home/aliases"
-    SFILES[~/.bashrc]="$dotdir/home/bashrc"
-    SFILES[~/.dir_colors]="$dotdir/home/dir_colors"
-    SFILES[~/.gitconfig]="$dotdir/home/gitconfig"
-    SFILES[~/.zshrc]="$dotdir/home/zshrc"
-    SFILES[~/.vimrc]="$dotdir/home/vimrc"
-    SFILES[~/.tmux.conf]="$dotdir/home/tmux.conf"
-    SFILES[~/.tmux/]="$dotdir/home/tmux/"
     
-    if [ -f $dotdir/ssh-config/config ]; then
-        SFILES[~/.ssh/config]="$dotdir/ssh-config/config"
-    else
-        SFILES[~/.ssh/config]="$dotdir/home/ssh_config"
-    fi
-
-    # desktop files
-    DFILES['~/.Xresources']="$dotdir/home/.Xresources"
-    DFILES['~/.Xinitrc']="$dotdir/home/.xinitrc.$hostname"
-    DFILES['~/.config/i3status/config']="$dotdir/config/i3status/config.$hostname"
-    DFILES['~/.config/i3/config']="$dotdir/config/i3/config"
-    DFILES['~/.config/dunst/dunstrc']="$dotdir/config/dunst/dunstrc"
-    DFILES['~/.config/htop/htoprc']="$dotdir/config/htop/htoprc"
-    DFILES['~/.config/compton.conf']="$dotdir/config/compton.conf"
-    DFILES['~/.config/rofi/rofi.conf']="$dotdir/config/rofi/rofi.conf"
-    DFILES['~/.config/ranger/rc.conf']="$dotdir/config/ranger/rc.conf"
-    DFILES['~/.config/ranger/commands.py']="$dotdir/config/ranger/commands.py"
-    DFILES['~/.config/ranger/rifle.conf']="$dotdir/config/ranger/rifle.conf"
-    DFILES['~/.local/wallpaper']="$dotdir/local/wallpaper"
-    DFILES['~/.local/share/fonts']="$dotdir/local/fonts"
-
-    # Gentoo files
-    GFILES['/etc/inittab']="$dotdir/etc/inittab.$hostname"
-    GFILES['/etc/sudoers']="$dotdir/etc/sudoers"
-    GFILES['/etc/locale.gen']="$dotdir/etc/locale.gen"
-    GFILES['/etc/env.d/02locale']="$dotdir/02locale"
-    GFILES['/etc/dispatch-conf.conf']="$dotdir/etc/dispatch-conf.conf"
-    GFILES['/etc/portage/postsync.d/eix']="$dotdir/etc/eix.$hostname"
-    GFILES['/etc/portake/make.conf,']="$dotdir/etc/make.conf.$hostname"
-    GFILES['/etc/portage/package.use/custom']="$dotdir/etc/custom.$hostname"
-    GFILES['/etc/portage/package.accept_keywords']="$dotdir/package.accept_keywords.$hostname"
-    GFILES['/var/lib/portage/world']="$dotdir/var/world.$hostname"
-
+    declare_vars;
 
     case $modi in
         -fi | --fullinstall )   #full_install
@@ -196,23 +275,31 @@ function main ()
         -si | --serverinstall ) #server_install
                                 ;;
                                 
-        -fc | --fullcheck )     #full_check
+        -fc | --fullcheck )     full_check
                                 ;;
                                 
         -sc | --servercheck )   server_check
-                                if [ "$difffiles" != "" ]; then 
-                                    nohup $DIFF $difffiles >/dev/null 2>&1 &
-                                else
-                                    echo "[!] All files are syncronised!"
-                                fi
-                                
                                 ;;
+
         * )                     echo "Unknown operator"
                                 exit 1
     esac
 
+    if [ "$difffiles" != "" ]; then 
+        if [ "$DIFF" == "meld -n" ]; then
+            nohup $DIFF $difffiles >/dev/null 2>&1 &
+        else
+            for i in "${difffiles[@]}"; do
+                vimdiff $i
+            done
+        fi
+     else
+        echo "[!] All files are syncronised!"
+     fi
+
     exit 0
 }
+###############################################################
 
 check_tools;
 
@@ -224,67 +311,3 @@ else
     usage;
     exit 1
 fi
-
-##############################################################################
-
-function full_check ()
-{
-    server_check;
-    
-    mkdir -p ~/.config    
-    mkdir -p ~/.config/i3status
-    mkdir -p ~/.local/share
-    if [ -f ~/.Xresources                ];  then check( ~/.Xresources,               $dotdir/home/Xresources );                    else cp $dotdir/home/Xresources        ~/.Xresources;                   fi
-    if [ -f ~/.xinitrc                   ];  then check( ~/.xinitrc,                  $dotdir/home/xinitrc.$hostname );             else cp $dotdir/home/xinitrc.$hostname ~/.xinitrc;                      fi
-    if [ -f ~/.config/i3status/config    ];  then check( ~/.config/i3status/config,   $dotdir/config/i3status/config.$hostname );   else cp $dotdir/config/i3status/config.$hostname  ~/.config/i3status/;  fi
-    if [ -f ~/.config/i3/config          ];  then check( ~/.config/i3/config,         $dotdir/config/i3/configc );                  else cp -rf $dotdir/config/i3          ~/.config;                       fi
-    if [ -f ~/.config/dunst/dunstrc      ];  then check( ~/.config/dunst/dunstrc,     $dotdir/config/dunst/dunstrc );               else cp -rf $dotdir/config/dunst       ~/.config;                       fi
-    if [ -f ~/.config/htop/htoprc        ];  then check( ~/.config/htop/htoprc,       $dotdir/config/htop/htoprc );                 else cp -rf $dotdir/config/htop        ~/.config;                       fi
-    if [ -f ~/.config/ranger/rc.conf     ];  then check( ~/.config/ranger/rc.confg,   $dotdir/config/ranger/rc.conf );              else cp -rf $dotdir/config/ranger      ~/.config;                       fi
-    if [ -f ~/.config/ranger/commands.py ];  then check( ~/.config/ranger/commands.py,$dotdir/config/ranger/commands.py );                                                                                  fi
-    if [ -f ~/.config/ranger/rifle.conf  ];  then check( ~/.config/ranger/rifle.conf, $dotdir/config/ranger/rifle.conf );                                                                                   fi
-    if [ -f ~/.config/rofi/rofi.conf     ];  then check( ~/.config/rofi/rofi.conf,    $dotdir/config/rofi/rofi.conf );              else cp -rf $dotdir/config/rofi        ~/.config;                       fi
-    if [ -f ~/.config/compton.conf       ];  then check( ~/.config/compton.conf,      $dotdir/config/compton.conf );                else cp $dotdir/config/compton.conf    ~/.config;                       fi
-    if [ -d ~/.local/wallpaper           ];  then rsync -av $dotdir/local/wallpaper/   ~/.local/wallpaper/;                                                                                                 fi
-    if [ -f ~/.local/share/fonts         ];  then rsync -av $dotdir/local/share/fonts/ ~/.local/share/fonts/;                                                                                               fi
-
-    distro=`lsb_release -i | awk '{print $3}'`
-    if   [ $distro == "Gentoo" ]; then
-
-            check( /var/lib/portage/world,          $dotdir/var/world.$hostname,       true ); 
-            check( /etc/locale.gen,                 $dotdir/etc/locale.gen,            true ); 
-            check( /etc/portake/make.conf,          $dotdir/etc/make.conf.$hostname,   true ); 
-            check( /etc/inittab,                    $dotdir/etc/inittab.$hostname,     true ); 
-            check( /etc//etc/dispatch-conf.conf,    $dotdir/etc/dispatch-conf.conf.$hostname, true ); 
-            check( /etc/sudoers,                    $dotdir/etc/sudoers.$hostname,     true ); 
-            
-
-            if [ -f /etc/env.d/02locale ]; then 
-                check( /etc/env.d/02locale, $dotdir/etc/02locale, true );
-            else 
-                sudo cp $dotdir/etc/02locale /etc/env.d/02locale; sudo env-update;                      
-            fi
-
-            if [ -f /etc/portage/postsync.d/eix ]; then 
-                check( /etc/portage/postsync.d/eix, $dotdir/etc/eix.$hostname, true );
-            else 
-                sudo cp $dotdir/etc/eix.$hostname /etc/portage/postsync.d/eix;                      
-            fi
-
-            if [ -f /etc/portage/package.use/custom ]; then 
-                check( /etc/portage/package.use/custom, $dotdir/etc/custom.$hostname, true );
-            else 
-                sudo cp $dotdir/etc/custom.$hostname /etc/portage/package.use/custom;                      
-            fi
-
-            if [ -f /etc/portage/package.accept_keywords ]; then 
-                check( /etc/portage/package.accept_keywords, $dotdir/etc/package.accept_keywords.$hostname, true );
-            else 
-                sudo cp $dotdir/etc/package.accept_keywords.$hostname /etc/portage/package.accept_keywords;                      
-            fi
-
-    elif [ $distro == "Debian" ]; then
-            $distro=""
-    fi
-}
-

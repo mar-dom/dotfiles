@@ -1,4 +1,4 @@
 # Configuration file for eselect
 # This file has been automatically generated.
-LANG="de_DE.UTF-8"
-LC_MESSAGES="POSIX"
+LANG=de_DE.UTF-8
+LC_MESSAGES=POSIX

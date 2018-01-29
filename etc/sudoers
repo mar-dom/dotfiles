@@ -1,0 +1,10 @@
+Cmnd_Alias      REBOOT = /sbin/halt, /sbin/reboot, /sbin/poweroff, /usr/sbin/pm-suspend, /sbin/shutdown
+Defaults        env_keep += "LANG LANGUAGE LINGUAS LC_* EDITOR"
+
+Defaults        pwfeedback
+Defaults        timestamp_timeout = 5
+Defaults        !tty_tickets
+
+
+%wheel ALL=(ALL) NOPASSWD: REBOOT
+

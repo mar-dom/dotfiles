@@ -20,23 +20,23 @@ else
 fi
 
 # Disable DPMS and Screensaver blanking
-xset s off -dpms
+#xset s off -dpms
 
 # Increase keypress rate
-xset r rate 200 30
+#xset r rate 200 30
 
 # German Keyboard
-setxkbmap -model thinkpad -layout de -variant nodeadkeys
+#setxkbmap -model thinkpad -layout de -variant nodeadkeys
 
 # Run Urxvt in daemon mode
-( ( sleep 1 && /usr/bin/urxvtd -q -f -o ) & )
+#( ( sleep 1 && /usr/bin/urxvtd -q -f -o ) & )
 
 # keep X clipboard and cutbuffer in sync
-autocutsel -s CLIPBOARD &
-autocutsel -s PRIMARY &
+#autocutsel -s CLIPBOARD &
+#autocutsel -s PRIMARY &
 
 # start dunst notifyd
-dunst &
+# dunst &
 
 # Ensure dbus is either already running, or safely start it
 if [[ -z "${DBUS_SESSION_BUS_ADDRESS}" ]]; then
