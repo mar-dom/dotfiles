@@ -107,7 +107,7 @@ function vim_install ( )
     echo "  [+] Vundle install..."
     
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    cp  $dotdir/home/vimrc ~/.vimrc
+    cp  $SFILES[~/.vimrc] dotdir/home/vimrc ~/.vimrc
     vim -c 'PluginInstall' -c 'qa!'
 }
 
@@ -123,7 +123,7 @@ function ssh_install ( )
     else
         # create default ssh-config 
         mkdir -p ~/.ssh
-        cp $SFILES[~/.ssh/config] .ssh/config
+        cp $SFILES[~/.ssh/config] ~/.ssh/config
     fi
 }
 
