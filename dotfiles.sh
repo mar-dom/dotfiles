@@ -1,7 +1,9 @@
 #!/bin/bash
 # set filetype=sh
-
-declare -ag TOOLS=( git vim vimdiff fortune tmux zsh htop rsync sudo )
+declare -a TOOLS=( git vim vimdiff fortune tmux zsh htop rsync sudo )
+declare -g DIFF=`if [ -x "$(command -v meld)"  ]; then echo "meld -n" ; else echo "vimdiff"; fi`
+declare -A SFILES DFILES GFILES
+declare -a difffiles
 
 function command_exists ( ) 
 {
@@ -105,7 +107,6 @@ function ssh_install ( )
 function server_check ( )
 { 
     echo "[*] Starting Server dotfiles check..."
-    declare -g DIFF=`if [ -x "$(command -v meld)"  ]; then echo "meld -n" ; else echo "vimdiff"; fi`
     
     #.zshrc .tmux/ .dir_colors .bashrc .vimrc .aliases .gitconfig .ssh/config .tmux.conf
     for item in "${!SFILES[@]}"; do
@@ -142,9 +143,7 @@ function server_check ( )
 
 function main ()
 {
-    declare -g hostname=`hostname` DIFF="vimdiff" dotdir="$HOME/.dotfiles"
-    declare -Ag SFILES DFILES GFILES
-    declare -a difffiles=""
+    declare -g hostname=`hostname` dotdir="$HOME/.dotfiles"
 
     # server files
     SFILES[~/.aliases]="$dotdir/home/aliases"
@@ -202,7 +201,9 @@ function main ()
                                 
         -sc | --servercheck )   server_check
                                 if [ "$difffiles" != "" ]; then 
-                                    nohub $DIFF $difffiles >/dev/null 2>&1 &
+                                    nohup $DIFF $difffiles >/dev/null 2>&1 &
+                                else
+                                    echo "[!] All files are syncronised!"
                                 fi
                                 
                                 ;;
