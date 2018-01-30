@@ -37,12 +37,14 @@ dev-util/cargo
 dev-util/meld
 games-misc/cowsay
 games-misc/fortune-mod
+gnome-extra/gnome-calculator
 gnome-extra/nm-applet
 gnome-extra/zenity
 lxde-base/lxappearance
 mail-client/thunderbird-bin
 media-gfx/gpicview
 media-gfx/qingy-themes
+media-gfx/scrot
 media-sound/volumeicon
 net-analyzer/nmap
 net-dns/bind-tools
@@ -75,6 +77,7 @@ sys-boot/grub
 sys-firmware/intel-microcode
 sys-fs/btrfs-progs
 sys-fs/dosfstools
+sys-fs/udisks
 sys-fs/xfsprogs
 sys-kernel/gentoo-sources
 sys-kernel/linux-firmware
@@ -89,6 +92,7 @@ virtual/jre
 www-client/firefox-bin
 x11-apps/mesa-progs
 x11-apps/setxkbmap
+x11-apps/xcalc
 x11-apps/xev
 x11-apps/xset
 x11-base/xorg-drivers
@@ -104,13 +108,12 @@ x11-misc/i3status
 x11-misc/numlockx
 x11-misc/rofi
 x11-misc/shutter
-x11-misc/slim
 x11-misc/x11vnc
+x11-misc/xautolock
 x11-plugins/pidgin-extprefs
 x11-terms/rxvt-unicode
 x11-terms/xfce4-terminal
 x11-themes/gtk-engines-murrine
-x11-themes/slim-themes
 x11-wm/i3-gaps
 xfce-base/thunar
 xfce-extra/thunar-shares-plugin

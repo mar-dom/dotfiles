@@ -45,6 +45,8 @@ net-wireless/wpa_supplicant smartcard
 sys-apps/dbus X
 sys-apps/qingy X gpm directfb
 sys-auth/consolekit policykit
+sys-fs/udisks cryptsetup lvm
+sys-fs/cryptsetup udev
 sys-kernel/gentoo-sources experimental symlink
 
 # Virtual
@@ -79,6 +81,7 @@ media-libs/gst-plugins-bad opengl X
 media-libs/harfbuzz icu
 sys-libs/tevent python
 sys-libs/tdb python
+sys-libs/libblockdev lvm
 x11-libs/cairo xcb X
 x11-libs/libxcb xkb
 x11-libs/libxkbcommon X

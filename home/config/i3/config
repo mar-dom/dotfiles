@@ -14,8 +14,14 @@ for_window [class="^.*"] border pixel 2
 gaps inner 10
 gaps outer 10
 
+
+#set $Locker i3lock -f --color=000000 && sleep 1
+set $Locker /home/domazet/.dotfiles/bin/slock.sh
+
 # Execute all stuff
-exec_always --no-startup-id xset s off -dpms
+exec_always --no-startup-id xset s off
+exec_always --no-startup-id xset dpms on
+exec_always --no-startup-id xset dpms 900 1800 1800
 exec_always --no-startup-id xset r rate 200 30
 exec_always --no-startup-id setxkbmap -model thinkpad -layout de -variant nodeadkeys
 exec --no-startup-id autocutsel -s CLIPBOARD 
@@ -26,9 +32,13 @@ exec --no-startup-id numlockx on
 exec --no-startup-id volumeicon
 exec --no-startup-id nm-applet
 exec --no-startup-id hsetroot -fill ~/.local/wallpaper/wallpaper1.jpg
-#exec --no-startup-id seafile-applet
-#exec --no-startup-id keepass
-#exec --no-startup-id pidgin
+exec --no-startup-id seafile-applet
+exec --no-startup-id keepass
+exec --no-startup-id pidgin
+exec --no-startup-id xautolock -time 5 -locker "$Locker"
+#exec --no-startup-id thunderbird-bin
+#exec --no-startup-id firefox-bin
+
 
 # Basic Bindings
 bindsym $mod+Return exec --no-startup-id st
@@ -97,6 +107,9 @@ bindsym $mod+Shift+Prior    move container to workspace prev
 bindsym $mod+Next       workspace next
 bindsym $mod+Shift+Next     move container to workspace next
 
+bindsym $mod+Shift+F12  exec  ~/.screenlayout/lid_open.sh
+bindsym $mod+Shift+F11  exec  ~/.screenlayout/lid_close.sh
+
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -138,7 +151,6 @@ bar {
         separator_symbol    " :|: "
 }
 
-set $Locker i3lock -f --color=000000 && sleep 1
 set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s) Shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id $Locker, mode "default"
@@ -178,3 +190,4 @@ for_window [class="Shutter"] floating enable
 for_window [class="com-sun-javaws-Main"] floating enable
 for_window [class="Gedit"] floating enable
 for_window [class="Meld"] floating enable
+for_window [class="Gnome-calculator"] floating enable

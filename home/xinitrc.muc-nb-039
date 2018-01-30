@@ -1,22 +1,12 @@
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 
 # Check if an external monitor is pluged in
-intern=eDP-1
 lid_status=`cat /proc/acpi/button/lid/LID/state | awk '{print $2}'`
-output_on=""
-output_off=""
-declare -a connected
 
-connected=`/usr/bin/xrandr --query | egrep "\Wconnected\W" | grep -v "$intern" | awk '{print $1}'`
-for port in ${connected[@]}; do
-    output_on+=" --output \"$port\" --auto"
-    output_off+=" --output \"$port\" --off"
-done
-
-if [ "$lid_status" == 'closed' ]; then
-    xrandr --output "$intern" --off $output_on
+if [ "$lid_status" == "closed" ]; then
+    ~/.screenlayout/lid_close.sh 
 else
-    xrandr --output "$intern" --auto $output_off
+    ~/.screenlayout/lid_open.sh 
 fi
 
 # Disable DPMS and Screensaver blanking
