@@ -17,27 +17,16 @@ gaps outer 10
 
 #set $Locker i3lock -f --color=000000 && sleep 1
 set $Locker /home/domazet/.dotfiles/bin/slock.sh
-
-# Execute all stuff
-exec_always --no-startup-id xset s off
-exec_always --no-startup-id xset dpms on
-exec_always --no-startup-id xset dpms 900 1800 1800
-exec_always --no-startup-id xset r rate 200 30
-exec_always --no-startup-id setxkbmap -model thinkpad -layout de -variant nodeadkeys
-exec --no-startup-id autocutsel -s CLIPBOARD 
-exec --no-startup-id autocutsel -s PRIMARY
-exec --no-startup-id dunst
-exec --no-startup-id compton
-exec --no-startup-id numlockx on
-exec --no-startup-id volumeicon
-exec --no-startup-id nm-applet
-exec --no-startup-id hsetroot -fill ~/.local/wallpaper/wallpaper1.jpg
-exec --no-startup-id seafile-applet
-exec --no-startup-id keepass
-exec --no-startup-id pidgin
-exec --no-startup-id xautolock -time 5 -locker "$Locker"
-#exec --no-startup-id thunderbird-bin
-#exec --no-startup-id firefox-bin
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
 
 
 # Basic Bindings
@@ -92,6 +81,9 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space      focus mode_toggle
 
+# rofi greenclip
+bindsym $mod+Shift+v   exec rofi -modi "clipboard:greenclip print" -show clipboard
+
 # start ranger
 bindsym $mod+r          exec $term -e ranger
 
@@ -109,17 +101,6 @@ bindsym $mod+Shift+Next     move container to workspace next
 
 bindsym $mod+Shift+F12  exec  ~/.screenlayout/lid_open.sh
 bindsym $mod+Shift+F11  exec  ~/.screenlayout/lid_close.sh
-
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
 
 # switch to workspace
 bindsym $mod+1      workspace $ws1
@@ -168,14 +149,17 @@ bindsym $mod+Shift+l mode "$mode_system"
 # assign
 assign [class="Firefox"] 2
 assign [class="Thunderbird"] 3
-assign [class="KeePass2"] 10
-assign [class="Pidgin" window_role="conversation"] 9
-assign [class="Pidgin" window_role="buddy_list"] 9
+assign [class="KeePass2"] 9
+assign [class="Pidgin" window_role="conversation"] 8
+assign [class="Pidgin" window_role="buddy_list"] 8
+assign [class="Xfce4-terminal"] 10
 
 # customize windows
 for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
+for_window [title="Preferences$"] floating enable
+for_window [class="(?i)mplayer"] floating enable
 for_window [class="Pinentry"] sticky enable
 for_window [class="Seafile Client"] floating enable
 for_window [class="Gpicview"] floating enable
@@ -191,3 +175,26 @@ for_window [class="com-sun-javaws-Main"] floating enable
 for_window [class="Gedit"] floating enable
 for_window [class="Meld"] floating enable
 for_window [class="Gnome-calculator"] floating enable
+
+
+# Execute all stuff
+exec_always --no-startup-id xset s off
+exec_always --no-startup-id xset dpms on
+exec_always --no-startup-id xset dpms 900 1800 1800
+exec_always --no-startup-id xset r rate 200 30
+exec_always --no-startup-id setxkbmap -model thinkpad -layout de -variant nodeadkeys
+exec --no-startup-id /home/domazet/.dotfiles/bin/greenclip daemon
+exec --no-startup-id dunst
+exec --no-startup-id compton
+exec --no-startup-id numlockx on
+exec --no-startup-id volumeicon
+exec --no-startup-id nm-applet
+exec --no-startup-id hsetroot -fill ~/.local/wallpaper/wallpaper1.jpg
+exec --no-startup-id seafile-applet
+exec --no-startup-id keepass
+exec --no-startup-id pidgin
+exec --no-startup-id xautolock -time 5 -locker "$Locker"
+exec --no-startup-id xfce4-terminal -e "/home/domazet/.dotfiles/bin/logon_log.sh"
+exec --no-startup-id firefox-bin
+exec --no-startup-id thunderbird-bin
+

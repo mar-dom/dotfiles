@@ -26,6 +26,7 @@ app-emulation/virtualbox ~amd64
 app-emulation/virtualbox-modules ~amd64
 
 # Apps
+app-admin/lnav ~amd64
 net-analyzer/nmap ~amd64
 net-im/pidgin ~amd64
 net-misc/freerdp ~amd64

@@ -1,5 +1,7 @@
 app-admin/ccze
 app-admin/keepass
+app-admin/lnav
+app-admin/logrotate
 app-admin/sudo
 app-admin/syslog-ng
 app-arch/file-roller
@@ -97,7 +99,6 @@ x11-apps/xev
 x11-apps/xset
 x11-base/xorg-drivers
 x11-misc/arandr
-x11-misc/autocutsel
 x11-misc/cbatticon
 x11-misc/compton
 x11-misc/dmenu
@@ -110,6 +111,7 @@ x11-misc/rofi
 x11-misc/shutter
 x11-misc/x11vnc
 x11-misc/xautolock
+x11-misc/xsel
 x11-plugins/pidgin-extprefs
 x11-terms/rxvt-unicode
 x11-terms/xfce4-terminal

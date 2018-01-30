@@ -76,6 +76,9 @@ alias -g c-emerge='sudo emerge -avuDN --with-bdeps=y @world'
 alias -g c-dispatch='sudo dispatch-conf'
 alias -g c-clean='sudo emerge --depclean'
 alias -g c-socks='AUTOSSH_DEBUG=1 autossh -M 0 -T -N -4 -p 22 -D 127.0.0.1:2101 -l adm-md -i "~/.ssh/ssh-jump-ws.id" -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" jump-ws.aisec.fraunhofer.de'
+alias -g c-ssha='ssh-add ~/.ssh/*.id'
+alias -g c-sshd='ssh-add -D'
+alias -g c-sshl='ssh-add -l'
 
 
 # Setup ls colors
