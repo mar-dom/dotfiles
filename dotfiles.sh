@@ -61,7 +61,6 @@ function declare_vars ( )
 
     # Gentoo files
     GFILES[/etc/inittab]="$dotdir/etc/inittab.$hostname"
-#    GFILES[/etc/sudoers]="$dotdir/etc/sudoers"
     GFILES[/etc/locale.gen]="$dotdir/etc/locale.gen"
     GFILES[/etc/env.d/02locale]="$dotdir/etc/02locale"
     GFILES[/etc/dispatch-conf.conf]="$dotdir/etc/dispatch-conf.conf"
@@ -131,7 +130,8 @@ function tmux_install ( )
 {
     echo "  [+] tmux install..."
 
-    # git clone tmux repos into ~/.tmux
+    mkdir -p .tmux
+    git clone https://github.com/tmux-plugins/tmux-yank ~/.tmux
 }
 
 function server_check ( )
