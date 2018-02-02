@@ -80,7 +80,6 @@ alias -g c-ssha='ssh-add ~/.ssh/*.id'
 alias -g c-sshd='ssh-add -D'
 alias -g c-sshl='ssh-add -l'
 
-
 # Setup ls colors
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 

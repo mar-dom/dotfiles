@@ -15,6 +15,7 @@ app-editors/vim
 app-emulation/virtualbox
 app-emulation/virtualbox-modules
 app-misc/colordiff
+app-misc/ranger
 app-misc/tmux
 app-office/libreoffice-bin
 app-portage/cpuid2cpuflags
@@ -32,6 +33,7 @@ app-shells/zsh-completions
 app-text/evince
 app-text/tree
 dev-java/oracle-jre-bin
+dev-lang/mono
 dev-libs/libinput
 dev-qt/qtgui
 dev-ruby/http_parser_rb
@@ -47,6 +49,8 @@ mail-client/thunderbird-bin
 media-gfx/gpicview
 media-gfx/qingy-themes
 media-gfx/scrot
+media-sound/alsamixergui
+media-sound/pulseaudio
 media-sound/volumeicon
 net-analyzer/nmap
 net-dns/bind-tools
@@ -65,6 +69,7 @@ net-wireless/iw
 net-wireless/rfkill
 net-wireless/wireless-tools
 net-wireless/wpa_supplicant
+sys-apps/exa
 sys-apps/ifd-gempc
 sys-apps/iucode_tool
 sys-apps/lm_sensors
@@ -79,6 +84,7 @@ sys-boot/grub
 sys-firmware/intel-microcode
 sys-fs/btrfs-progs
 sys-fs/dosfstools
+sys-fs/inotify-tools
 sys-fs/udisks
 sys-fs/xfsprogs
 sys-kernel/gentoo-sources
@@ -94,7 +100,9 @@ virtual/jre
 www-client/firefox-bin
 x11-apps/mesa-progs
 x11-apps/setxkbmap
+x11-apps/xbacklight
 x11-apps/xcalc
+x11-apps/xclock
 x11-apps/xev
 x11-apps/xset
 x11-base/xorg-drivers

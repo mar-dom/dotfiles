@@ -1,5 +1,4 @@
 # Generall
-sys-devel/* ~amd64
 sys-firmware/* ~amd64
 sys-process/* ~amd64
 sys-kernel/linux-firmware ~amd64
@@ -27,6 +26,7 @@ app-emulation/virtualbox-modules ~amd64
 
 # Apps
 app-admin/lnav ~amd64
+sys-apps/exa ~amd64
 net-analyzer/nmap ~amd64
 net-im/pidgin ~amd64
 net-misc/freerdp ~amd64
@@ -39,9 +39,6 @@ x11-terms/rxvt-unicode ~amd64
 # Libs
 media-libs/mesa ~amd64
 dev-lang/mono ~amd64
-=app-shells/tmux-bash-completion-9999 **
-virtual/rust ~amd64
-dev-lang/rust ~amd64
-dev-util/cargo ~amd64
 games-misc/cowsay ~amd64
 x11-libs/libdrm ~amd64
+=app-shells/tmux-bash-completion-9999 **

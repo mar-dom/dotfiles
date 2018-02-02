@@ -22,7 +22,7 @@ alias show-path='echo -e ${PATH//:/\\n} | sort'
 alias show-ssh-ciphers='ssh -Q cipher'
 alias show-ssh-mac='ssh -Q mac'
 alias show-ssh-kex='ssh -Q kex'
-
+alias show-wan-ip='curl icanhazip.com'
 
 if command_exists lsb_release; then
     distro=`lsb_release -i | awk '{print $3}'`

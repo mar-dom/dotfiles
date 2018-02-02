@@ -11,9 +11,8 @@ app-office/libreoffice-bin java
 app-office/libreoffice-l10n offlinehelp
 app-emulation/virtualbox vnc
 
-# Java
+# Dev
 dev-java/oracle-jre-bin commercial cups gtk3 javafx nsplugin jce
-dev-cpp/gtkmm X
 
 # Python
 >=dev-lang/python-2.7.14 sqlite
@@ -48,6 +47,7 @@ sys-auth/consolekit policykit
 sys-fs/udisks cryptsetup lvm
 sys-fs/cryptsetup udev
 sys-kernel/gentoo-sources experimental symlink
+media-sound/pulseaudio gtk 
 
 # Virtual
 virtual/imagemagick-tools perl
@@ -82,7 +82,8 @@ media-libs/harfbuzz icu
 sys-libs/tevent python
 sys-libs/tdb python
 sys-libs/libblockdev lvm
-x11-libs/cairo xcb X
 x11-libs/libxcb xkb
 x11-libs/libxkbcommon X
+x11-libs/pango X
+x11-libs/cairo X xcb opengl gles2
 x11-libs/libva X

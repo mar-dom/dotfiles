@@ -8,14 +8,11 @@ floating_modifier $mod
 
 font pango:Noto Sans Disp Med 8
 
-for_window [class="^.*"] border pixel 2
-
-
+# Gaps config
 gaps inner 10
 gaps outer 10
 
-
-#set $Locker i3lock -f --color=000000 && sleep 1
+set $term "st"
 set $Locker /home/domazet/.dotfiles/bin/slock.sh
 set $ws1 "1"
 set $ws2 "2"
@@ -30,7 +27,7 @@ set $ws10 "10"
 
 
 # Basic Bindings
-bindsym $mod+Return exec --no-startup-id st
+bindsym $mod+Return exec --no-startup-id $term
 
 # Restart i3
 bindsym $mod+Shift+r restart
@@ -102,6 +99,30 @@ bindsym $mod+Shift+Next     move container to workspace next
 bindsym $mod+Shift+F12  exec  ~/.screenlayout/lid_open.sh
 bindsym $mod+Shift+F11  exec  ~/.screenlayout/lid_close.sh
 
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s) Shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && sudo pm-suspend, mode "default"
+    bindsym r exec --no-startup-id sudo shutdown -r now, mode "default"
+    bindsym Shift+s exec --no-startup-id sudo shutdown -P now, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+l mode "$mode_system"
+
+bar {
+        status_command      i3status
+        separator_symbol    " :|: "
+}
+
 # switch to workspace
 bindsym $mod+1      workspace $ws1
 bindsym $mod+2      workspace $ws2
@@ -126,35 +147,15 @@ bindsym $mod+Shift+8    move container to workspace $ws8
 bindsym $mod+Shift+9    move container to workspace $ws9
 bindsym $mod+Shift+0    move container to workspace $ws10
 
-
-bar {
-        status_command      i3status
-        separator_symbol    " :|: "
-}
-
-set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s) Shutdown
-mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && sudo pm-suspend, mode "default"
-    bindsym r exec --no-startup-id sudo shutdown -r now, mode "default"
-    bindsym Shift+s exec --no-startup-id sudo shutdown -P now, mode "default"
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+Shift+l mode "$mode_system"
-
 # assign
-assign [class="Firefox"] 2
-assign [class="Thunderbird"] 3
-assign [class="KeePass2"] 9
-assign [class="Pidgin" window_role="conversation"] 8
-assign [class="Pidgin" window_role="buddy_list"] 8
-assign [class="Xfce4-terminal"] 10
+assign [class="Firefox"] $ws2
+assign [class="Thunderbird"] $ws3
+assign [class="KeePass2"] $ws9
+assign [class="^Pidgin$"] $ws8
+assign [class="Xfce4-terminal"] $ws10
 
 # customize windows
+for_window [class="^.*"] border pixel 2
 for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -163,7 +164,8 @@ for_window [class="(?i)mplayer"] floating enable
 for_window [class="Pinentry"] sticky enable
 for_window [class="Seafile Client"] floating enable
 for_window [class="Gpicview"] floating enable
-for_window [class="Pidgin"] floating enable
+for_window [class="^Pidgin$" window_role="buddy_list"] layout splith, resize shrink width 0 px or 30 ppt, move right
+for_window [class="^Pidgin$" window_role="conversation"] resize grow width 0 px or 30 ppt, move left
 for_window [class="Thunar"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="Thunderbird"] floating enable
@@ -176,10 +178,9 @@ for_window [class="Gedit"] floating enable
 for_window [class="Meld"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 
-
 # Execute all stuff
 exec_always --no-startup-id xset s off
-exec_always --no-startup-id xset dpms on
+exec_always --no-startup-id xset +dpms
 exec_always --no-startup-id xset dpms 900 1800 1800
 exec_always --no-startup-id xset r rate 200 30
 exec_always --no-startup-id setxkbmap -model thinkpad -layout de -variant nodeadkeys
@@ -197,4 +198,3 @@ exec --no-startup-id xautolock -time 5 -locker "$Locker"
 exec --no-startup-id xfce4-terminal -e "/home/domazet/.dotfiles/bin/logon_log.sh"
 exec --no-startup-id firefox-bin
 exec --no-startup-id thunderbird-bin
-
