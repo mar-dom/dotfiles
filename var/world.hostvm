@@ -1,5 +1,6 @@
 app-admin/ccze
 app-admin/keepass
+app-admin/lnav
 app-admin/logrotate
 app-admin/sudo
 app-admin/syslog-ng
