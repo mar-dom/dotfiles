@@ -21,6 +21,7 @@ app-crypt/ccid ~amd64
 dev-perl/pcsc-perl ~amd64
 
 # Apps
+app-admin/lnav ~amd64
 net-analyzer/nmap ~amd64
 net-firewall/ufw-frontends ~amd64
 net-im/pidgin ~amd64
