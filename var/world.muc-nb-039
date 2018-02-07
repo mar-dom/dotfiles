@@ -12,6 +12,7 @@ app-crypt/seahorse
 app-editors/gedit
 app-editors/gedit-plugins
 app-editors/vim
+app-emulation/docker
 app-emulation/virtualbox
 app-emulation/virtualbox-modules
 app-misc/colordiff
