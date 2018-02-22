@@ -195,6 +195,6 @@ exec --no-startup-id seafile-applet
 exec --no-startup-id keepass
 exec --no-startup-id pidgin
 exec --no-startup-id xautolock -time 5 -locker "$Locker"
-exec --no-startup-id xfce4-terminal -e "/home/domazet/.dotfiles/bin/logon_log.sh"
-exec --no-startup-id firefox-bin
-exec --no-startup-id thunderbird-bin
+#exec --no-startup-id xfce4-terminal -e "/home/domazet/.dotfiles/bin/logon_log.sh"
+#exec --no-startup-id firefox-bin
+#exec --no-startup-id thunderbird-bin
