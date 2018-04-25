@@ -12,4 +12,4 @@ nohup xfreerdp  +sec-nla +clipboard +fonts \
                 /d:aisec /u:domazet /v:terminalsrv.aisec.fraunhofer.de \
                 /drive:home,/home/domazet \
 		/p:$(zenity --entry --title="Domain Password" --text="domazet@terminalsrv RDP Password:" --hide-text) \
-                /app:"||WINWORD" >/dev/null 2>&1 &
+                /app:"||VISIO" >/dev/null 2>&1 &
