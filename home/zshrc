@@ -1,4 +1,4 @@
-# vim:set ft=zsh
+# vim: ft=zsh
 PATH="$PATH:/sbin:/usr/sbin:/usr/local/sbin"
 
 source ~/.antigen/antigen.zsh

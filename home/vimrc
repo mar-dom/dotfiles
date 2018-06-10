@@ -1,58 +1,102 @@
-" Init
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Plugins
+" .vim
+" ├── pack
+" │   ├── dist
+" │   │   └── start
+" │   │       ├── fzf.vim
+" │   │       ├── nerdtree
+" │   │       ├── vim-airline
+" │   │       └── vim-devicons
+" │   └── themes
+" │       └── opt
+" │           └── solarized8
+"
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-    Plugin 'VundleVim/Vundle.vim'
-    Plugin 'altercation/vim-colors-solarized'
-    Plugin 'scrooloose/nerdtree'
-    Plugin 'sheerun/vim-polyglot'
-    Plugin 'ryanoasis/vim-devicons'
-    Plugin 'mhinz/vim-startify'
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'vim-airline/vim-airline'
-    Plugin 'vim-airline/vim-airline-themes'
-call vundle#end()            " required
-filetype plugin indent on    " required
+" Basics
+set nocompatible
+filetype plugin on
 
-" Sets
-set mouse-=a
-set encoding=utf-8
-set hidden "hiddes buffers instead of closing them
+" Syntax 
+syntax on
+
+" Set Colors
+set background=dark
+colorscheme solarized8_high
+
+" No Backup or Swapfile
 set nobackup
 set noswapfile
-set showmatch "show search matches
-set ignorecase
-set hlsearch
-set incsearch
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-set nowrap "no line wrap
-set rnu "relative line numbers
-set cursorline
-set noshowmode
-set pastetoggle=<F2>
-" no auto-indenting
-set noautoindent
-set nocindent
-set nosmartindent
-set indentexpr=
-filetype indent off
-filetype plugin indent off
 
-" leader key
-let mapleader = ","
+" No Line Wrap
+set nowrap
+
+" Set F2 for paste toggle
+set pastetoggle=<F2>
+
+" show the cursorline
+set cursorline
+
+" UTF-8 Encoding for all files
+set encoding=utf-8
+
+" Line Numbers + relative
+set number
+set relativenumber
+
+" Disable mouse 
+set mouse-=a
+
+" Disable SpellChecking
+set nospell
+
+" Enable System Clipboard
+set clipboard=unnamedplus
+
+" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+set splitbelow
+set splitright
+
+" Enable advanced Autocompletion 
+set wildmode=longest,list,full
+set wildmenu
+
+" Show matched brackets
+set showmatch
+
+" Ignore case on searches
+set ignorecase
+
+" Highlight Search
+set hlsearch
+
+" Search while typing
+set incsearch
+
+"https://github.com/junegunn/fzf.vim.git Activate Modeline
+set modeline
+set modelines=5
+
+" ============== KEYBINDINGS ==============
+" define the Leader key
+let mapleader = "-"
+
+" fzf magic
+nnoremap <silent> , :Files<cr>
+
+" create new tab || t
+nnoremap 	<C-t> 		:tabnew<CR>
+"gt next tab
+"gT prev tab
+"C+W+W move between openwindows
 
 " Use CTRL-S for saving, also in Insert mode
-noremap <C-S>   :update<CR>
-vnoremap <C-S>  <C-C>:update<CR>
-inoremap <C-S>  <C-O>:update<CR>
+noremap 	<C-S>   :update<CR>
+vnoremap	<C-S>  	<C-C>:update<CR>
+inoremap 	<C-S>	<C-O>:update<CR><ESC>
 
-noremap <C-Q>   :quit!<CR>
-vnoremap <C-Q>  <C-C>:quit!<CR>
-inoremap <C-Q>  <C-O>:quit!<CR>
+noremap 	<C-Q>   :quit!<CR>
+vnoremap 	<C-Q>  	<C-C>:quit!<CR>
+inoremap 	<C-Q>  	<C-O>:quit!<CR>
 
 " Toggle line numbers
 function! NumberToggle()
@@ -62,51 +106,32 @@ function! NumberToggle()
            set relativenumber
       endif
 endfunction
-nnoremap <F3> :call NumberToggle()<CR>
+nnoremap 	<F3> 	:call NumberToggle()<CR>
 
-" Buffer keymaps
-function SwitchBuffer()
-  b#
-endfunction
-nmap <Tab> :call SwitchBuffer()<CR>
-" To open a new empty buffer
-nmap <leader>t :enew<cr>
-" Move to the next buffer
-nmap <leader>n :bnext<CR>
-" Move to the previous buffer
-nmap <leader>m :bprevious<CR>
-" Close the current buffer and move to the previous one
-nmap <leader>q :bp <BAR> bd #<CR>
-" Show all open buffers and their status
-nmap <leader>l :ls<CR>
+map <C-n> :NERDTreeToggle<CR>
 
-" Solarized Setup
-syntax on
-let g:solarized_termtrans = 1
-set background=dark
-colorscheme solarized
+" ============== FILETYPE ==============
+" Interpret .md files, etc. as .markdown
+let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md':'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 
-" Nerdtree Setup
-let NERDTreeShowHidden = 1
-map <F5> :NERDTreeToggle<cr>
 
-" Startify Setup
-let g:startify_list_order = [
-            \ ['   Most recently used files:'],
-            \ 'files',
-            \ ['   Most recently used files in the current directory:'],
-            \ 'dir',
-            \ ['   These are my sessions:'],
-            \ 'sessions',
-            \ ['   These are my bookmarks:'],
-            \ 'bookmarks',
-            \ ['   These are my commands:'],
-            \ 'commands',
-\ ]
-let g:startify_fortune_use_unicode = 1
+" ============== CUSTOM ==============
+augroup resCur
+  autocmd!
+  autocmd BufReadPost * call setpos(".", getpos("'\""))
+augroup END
 
-" Airline Setup
-let g:airline_solarized_bg='dark'
+
+" Set nice tabline
 let g:airline#extensions#tabline#enabled = 1
+
+" Set the airline theme
+let g:airline_theme='wombat'
+
+" Enable PowerLine Font Symbols
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'enter':  'tab split',
+  \ 'ctrl-v': 'vsplit' }

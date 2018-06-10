@@ -1,0 +1,23 @@
+#!/bin/bash
+
+device="${BLOCK_INSTANCE:-enp0s25}"
+#status=$(cat /sys/class/net/${device}/operstate)
+status=$(nmcli connection show ${device} | grep GENERAL.STATE | awk '{ print $2 }')
+
+if [[ "${status}" == "activated" ]]; then
+
+	AF=inet6?
+	IPADDR=$(ip addr show $device | perl -n -e "/$AF ([^\/]+).* scope global/ && print \$1 and exit")
+
+	#echo "<span color='#dfe3ee'>[${IPADDR}]</span>"
+	if [[ "${device}" == "AISEC.VPN" ]]; then
+		echo "<span color='#dfe3ee'>aisec</span>"
+		echo "<span color='#dfe3ee'>aisec</span>"
+		echo ""
+	else
+		echo "<span color='#dfe3ee'>home</span>"
+		echo "<span color='#dfe3ee'>home</span>"
+		echo ""
+	fi	
+fi
+

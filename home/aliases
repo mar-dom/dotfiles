@@ -9,20 +9,42 @@ distro=""
 # Generell
 alias ls='ls --color=auto --group-directories-first -F'
 alias ll='ls -lA'
+alias diff='diff --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias igrep='grep -i'
 alias dmesg='dmesg --color'
 alias mv='mv -v'
 alias cp='cp -v'
 alias rm='rm -v'
 alias tailf='tail -f'
-alias show-aliases='alias'
-alias show-path='echo -e ${PATH//:/\\n} | sort'
-alias show-ssh-ciphers='ssh -Q cipher'
-alias show-ssh-mac='ssh -Q mac'
-alias show-ssh-kex='ssh -Q kex'
-alias show-wan-ip='curl icanhazip.com'
+alias v='vim'
+alias ..='cd ..'
+
+alias c-show-aliases='alias'
+alias c-show-path='echo -e ${PATH//:/\\n} | sort'
+alias c-show-ssh-ciphers='ssh -Q cipher'
+alias c-show-ssh-mac='ssh -Q mac'
+alias c-show-ssh-kex='ssh -Q kex'
+alias c-show-wan-ip='curl icanhazip.com'
+
+alias c-i3='vim ~/.config/i3/config'
+alias c-vim='vim ~/.vimrc'
+
+alias sshj='ssh -J jump-ws'
+alias sshu='ssh -l adm-ism'
+alias sshju='sshj -l adm-ism'
+alias scpj='scp -o "ProxyJump jump-ws"'
+alias c-ssh-socks='AUTOSSH_DEBUG=1 autossh -M 0 -T -N -4 -p 22 -D 127.0.0.1:2101 -l adm-md -i "~/.ssh/aisec/ssh-jump-ws.id" -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" jump-ws.aisec.fraunhofer.de'
+alias c-ssh-jump2rds='AUTOSSH_DEBUG=1 autossh -M 0 -T -N -4 -p 22 -L:13389:rds-ism.aisec.fraunhofer.de:3389 -l adm-md -i "~/.ssh/aisec/ssh-jump-ws.id" -o "ExitOnForwardFailure yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" jump-ws.aisec.fraunhofer.de'
+alias c-ssh-add='ssh-add ~/.ssh/{aisec/*.id,ssh-github.id}'
+alias c-ssh-delete='ssh-add -D'
+alias c-ssh-list='ssh-add -l'
+
+alias c-rdp-terminalsrv='$CRDP /u:domazet /v:terminalsrv.aisec.fraunhofer.de'
+alias c-rdp-rds-direct='$CRDP /u:adm-md /v:rds-ism.aisec.fraunhofer.de'
+alias c-rdp-rds='$CRDP /u:adm-md /v:localhost:13389'
 
 if command_exists lsb_release; then
     distro=`lsb_release -i | awk '{print $3}'`
@@ -44,8 +66,9 @@ if [[ $distro == "Gentoo" ]]; then
     alias eqy='equery y'
     alias eqs='equery s'
     alias eqw='equery w'
-#elif [ $distro == "Debian" ]; then
+elif [ $distro == "Debian" ]; then
+	#alias 
+	$distro
 fi 
 
 unset distro
-

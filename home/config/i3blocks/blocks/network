@@ -1,0 +1,55 @@
+#!/bin/bash
+
+device="${BLOCK_INSTANCE:-enp0s25}"
+status=$(cat /sys/class/net/${device}/operstate)
+wireless=0
+
+if [[ -d "/sys/class/net/${device}/wireless" ]]; then
+	wireless=1
+fi
+
+URGENT_VALUE=20
+
+
+if [[ "${status}" == "up" ]]; then
+
+	AF=inet6?
+	IPADDR=$(ip addr show $device | perl -n -e "/$AF ([^\/]+).* scope global/ && print \$1 and exit")
+	
+	if [[ "$wireless" == 1 ]]; then
+		quality=$(grep ${device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+		SSID_NAME=$(iwgetid -r)
+		BITRATE=$(iw dev wlp3s0 link | grep "tx bitrate" | awk '{ print $3 }')
+
+		#echo "<span color='#adff00'> </span><span color='#dfe3ee'>${quality}%  [${BITRATE} Mb/s] <span color='#8caba8'></span> ${SSID_NAME} [$IPADDR]</span>"
+		#echo "<span color='#adff00'> </span><span color='#dfe3ee'>${quality}%  [${BITRATE} Mb/s] <span color='#8caba8'></span> ${SSID_NAME} [$IPADDR]</span>"
+		echo "<span color='#adff00'> </span><span color='#dfe3ee'>${SSID_NAME}</span>"
+		echo "<span color='#adff00'> </span><span color='#dfe3ee'>${SSID_NAME}</span>"
+		echo ""
+
+		if [[ "${quality}" -le "${URGENT_VALUE}" ]]; then
+			exit 33
+		fi
+
+		if [[ "${SSID_NAME}" != "" ]]; then
+		  if [[ "${URGENT_VALUE}" != "" ]] && [[ $(echo "${SSID_NAME}" | grep -we "${URGENT_VALUE}") != "" ]]; then
+		    exit 33
+		  fi
+		fi
+	else
+		echo "<span color='#adff00'> </span><span color='#dfe3ee'>on</span>"
+		echo "<span color='#adff00'> </span><span color='#dfe3ee'>on</span>"
+		echo ""
+	fi
+else
+  	if [[ "$wireless" == 1 ]]; then
+		echo "睊 "
+    		echo "睊 "
+    		echo "#d9534f"
+  	else
+    		echo " "
+    		echo " "
+    		echo "#d9534f"
+  	fi 
+fi
+

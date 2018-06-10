@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if 	[[ "${BLOCK_BUTTON}" -eq 1 ]]; then
+  		pactl set-source-mute 1 false
+elif 	[[ "${BLOCK_BUTTON}" -eq 2 ]]; then
+  		pavucontrol --tab 4
+elif 	[[ "${BLOCK_BUTTON}" -eq 3 ]]; then
+		pactl set-source-mute 1 true
+elif 	[[ "${BLOCK_BUTTON}" -eq 4 ]]; then
+  		amixer -q sset Capture 5%+
+elif 	[[ "${BLOCK_BUTTON}" -eq 5 ]]; then
+  		amixer -q sset Capture 5%-
+fi
+
+statusLine=$(amixer get Capture | tail -n 1)
+status=$(echo "${statusLine}" | grep -wo "on")
+volume=$(echo "${statusLine}" | awk -F ' ' '{print $5}' | tr -d '[]%')
+
+if [[ "${status}" == "on" ]]; then
+  echo "<span color='#00FFFF'></span><span color='#dfe3ee'> ${volume}%</span>"
+  echo "<span color='#00FFFF'></span><span color='#dfe3ee'> ${volume}%</span>"
+  echo ""
+else
+  echo "<span color='#00FFFF'></span>"
+  echo "<span color='#00FFFF'></span>"
+  echo ""
+fi

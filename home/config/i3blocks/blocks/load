@@ -1,0 +1,17 @@
+#!/bin/bash
+
+INSTANCE="${BLOCK_INSTANCE:-1}"
+
+LOAD=$(cat /proc/loadavg | awk -F ' ' '{print $'"${INSTANCE}"'}')
+if [[ "${LOAD}" != "" ]]; then
+  LOAD_PERC=$(echo "scale=0; ${LOAD} * 100" | bc -l)
+  LOAD_PERC=${LOAD_PERC%.*}
+
+  echo "<span color='#dfe3ee'>${LOAD}</span>"
+  echo "<span color='#dfe3ee'>${LOAD}</span>"
+  echo ""
+
+  if [[ "${LOAD}" > "3.00" ]]; then
+    exit 33
+  fi
+fi

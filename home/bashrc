@@ -81,6 +81,16 @@ elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+# Setup fzf
+if [ -f /usr/share/fzf/key-bindings.bash ]; then
+    source /usr/share/fzf/key-bindings.bash
+fi
+if [ -f /usr/share/fzf/completion.bash ]; then
+    source /usr/share/fzf/completion.bash
+fi
+
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+
 # Setup aliases
 if [ -f ~/.aliases ]; then
     source ~/.aliases
@@ -90,4 +100,3 @@ fi
 if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
-

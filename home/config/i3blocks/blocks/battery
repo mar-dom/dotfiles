@@ -1,0 +1,26 @@
+#!/bin/bash
+
+BATTERY=${BLOCK_INSTANCE}
+BATTERY_INFO=$(acpi -b | grep "Battery ${BATTERY}")
+BATTERY_STATE=$(echo "${BATTERY_INFO}" | grep -wo "Full\|Charging\|Discharging")
+BATTERY_POWER=$(echo "${BATTERY_INFO}" | grep -o '[0-9]\+%' | tr -d '%')
+
+URGENT_VALUE=25
+
+if [[ "${BATTERY_STATE}" = "Charging" ]]; then
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo ""
+elif [[ "${BATTERY_STATE}" = "Discharging" ]]; then
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo ""
+else
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo "<span color='#7ea1a5'></span><span color='#dfe3ee'> ${BATTERY_POWER}%</span>"
+  echo ""
+fi
+
+if [[ "${BATTERY_POWER}" -le "${URGENT_VALUE}" ]]; then
+  exit 33
+fi

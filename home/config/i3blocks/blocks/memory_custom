@@ -1,0 +1,13 @@
+#!/bin/bash
+
+URGENT_VALUE=2
+
+MEMINFO=$(echo "scale=2; `cat /proc/meminfo | grep MemAvailable | awk '{ print $2}'`/1024/1014" | bc -l)
+
+echo "<span color='#dfe3ee'>${MEMINFO}</span>"
+echo "<span color='#dfe3ee'>${MEMINFO}</span>"
+echo ""
+
+if [[ "${MEMINFO}" < "${URGENT_VALUE}" ]]; then
+  exit 33
+fi

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+case ${BLOCK_BUTTON} in
+	1) FORMAT="${BLOCK_INSTANCE:-%d.%m.%Y - %H:%M:%S}";;
+	*) FORMAT="${BLOCK_INSTANCE:-%H:%M:%S}";;
+esac
+
+DATETIME=$(date "+${FORMAT}")
+
+echo "<span color='#dfe3ee'>${DATETIME}</span>"
+echo "${DATETIME}"
+echo "${DATETIME}"
+echo ""
+
+

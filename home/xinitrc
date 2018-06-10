@@ -1,0 +1,13 @@
+# Merge my Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+# Start the SSH-Agent
+#eval `ssh-agent`
+#export SSH_AUTH_SOCK
+
+dbus-update-activation-environment --systemd DISPLAY
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
+
+# Finaly start i3wm
+exec i3 > /var/log/i3.log 2>&1

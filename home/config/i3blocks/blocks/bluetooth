@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Left click
+if [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
+  sudo rfkill unblock bluetooth
+# Right click
+elif [[ "${BLOCK_BUTTON}" -eq 3 ]]; then
+  sudo rfkill block bluetooth
+fi
+
+STATUS=$(rfkill | grep -i bluetooth | awk '{print $4}' | head -1)
+
+if [[ "${STATUS}" = "unblocked" ]]; then
+	echo "<span color='#268bd2'></span><span color='#dfe3ee'></span>"
+	echo "<span color='#268bd2'></span><span color='#dfe3ee'></span>"
+	echo ""
+else
+	echo "<span color='#268bd2'></span><span color='#dfe3ee'></span>"
+	echo "<span color='#268bd2'></span><span color='#dfe3ee'></span>"
+	echo ""
+fi
+

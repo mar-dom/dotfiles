@@ -6,153 +6,187 @@ set $mod Mod4
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-font pango:Noto Sans Disp Med 8
+font pango:Noto Sans Mono:style=Regular 8
 
 # Gaps config
 gaps inner 10
 gaps outer 5
 
+# set default terminal
 set $term "st"
-set $Locker /home/domazet/.dotfiles/bin/slock.sh
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
 
+# set lockscreen
+set $Locker "betterlockscreen -l"
+
+# set suspend
+set $Sleep "systemctl suspend"
+
+# set reboot
+set $Reboot "systemctl reboot"
+
+# set shutdown
+set $Shutdown "systemctl poweroff"
+
+# set workspaces
+set $ws1    	"1:   Firefox "
+set $ws2    	"2:   Terminal "
+set $ws3    	"3:   General "
+set $ws4    	"4:   General "
+set $ws5    	"5:   General "
+set $ws6    	"6:   General "
+set $ws7    	"7:   General "
+set $ws8	"8:   eMail "	
+set $ws9 	"9:   Chat "
+set $ws10	"10:   Keepass "
 
 # Basic Bindings
-bindsym $mod+Return exec --no-startup-id $term
+bindsym 	$mod+Return 	exec --no-startup-id $term
 
 # Restart i3
-bindsym $mod+Shift+r restart
+bindsym 	$mod+Shift+r 	restart
 
 # The middle button over a titlebar kills the window
-bindsym --release button2 kill
-bindsym --whole-window $mod+button2 kill
+bindsym 	--release button2 kill
+bindsym 	--whole-window $mod+button2 kill
 
 # The right button toggles floating
-bindsym button3 floating toggle
-bindsym $mod+button3 floating toggle
+bindsym 	button3 	floating toggle
+bindsym 	$mod+button3 	floating toggle
 
 # kill focused window
-bindsym $mod+q          kill
-bindsym $mod+Shift+q    kill
+bindsym 	$mod+q          kill
+bindsym 	$mod+Shift+q    kill
 
-# start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id "rofi -modi drun,ssh -show drun -no-parse-known-hosts -disable-history"
-bindsym $mod+Tab exec --no-startup-id "rofi -modi window -show window"
+# start rofi
+bindsym 	$mod+d 		exec --no-startup-id "rofi -modi drun -show drun -disable-history"
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym 	$mod+Left 	focus left
+bindsym 	$mod+Down 	focus down
+bindsym 	$mod+Up 	focus up
+bindsym 	$mod+Right 	focus right
+
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym 	$mod+Shift+Left move left
+bindsym 	$mod+Shift+Down move down
+bindsym 	$mod+Shift+Up 	move up
+bindsym 	$mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym 	$mod+h 		split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym 	$mod+v 		split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+bindsym 	$mod+f 		fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym 	$mod+w 		layout 	tabbed
+bindsym 	$mod+e 		layout 	toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
-# change focus between tiling / floating windows
-bindsym $mod+space      focus mode_toggle
+bindsym 	$mod+Shift+space floating toggle
 
 # rofi greenclip
-bindsym $mod+Shift+v   exec rofi -modi "clipboard:greenclip print" -show clipboard
+bindsym 	$mod+Shift+v   	exec --no-startup-id CM_LAUNCHER=rofi clipmenu
 
 # start ranger
-bindsym $mod+r          exec st -e ranger
+bindsym 	$mod+r          exec --no-startup-id st -e ranger
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exit
-
-bindsym $mod+Home       workspace $ws1
-bindsym $mod+Shift+Home     move container to workspace $ws1
-bindsym $mod+End        workspace $ws10
-bindsym $mod+Shift+End      move container to workspace $ws10
-bindsym $mod+Prior      workspace prev
-bindsym $mod+Shift+Prior    move container to workspace prev
-bindsym $mod+Next       workspace next
-bindsym $mod+Shift+Next     move container to workspace next
-
-bindsym $mod+Shift+F12  exec  ~/.screenlayout/lid_open.sh
-bindsym $mod+Shift+F11  exec  ~/.screenlayout/lid_close.sh
+bindsym 	$mod+Shift+e 	exit
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym 	XF86AudioRaiseVolume 	exec --no-startup-id pactl set-sink-volume 0 +5% 	#increase sound volume
+bindsym 	XF86AudioLowerVolume 	exec --no-startup-id pactl set-sink-volume 0 -5% 	#decrease sound volume
+bindsym 	XF86AudioMute 		exec --no-startup-id pactl set-sink-mute   0 toggle 	#toggle sound
+bindsym		XF86AudioMicMute	exec --no-startup-id pactl set-source-mute 1 toggle	#toggle mic
+bindsym		XF86AudioPlay		exec --no-startup-id mpc toggle				#toggle play
+bindsym		XF86AudioStop		exec --no-startup-id mpc stop				#stop play
+
+# Sreen brightness controls
+bindsym 	XF86MonBrightnessUp 	exec --no-startup-id xbacklight -inc 20 # increase screen brightness
+bindsym 	XF86MonBrightnessDown 	exec --no-startup-id xbacklight -dec 20 # decrease screen brightness
+
+# ScreenLock
+bindsym 	XF86ScreenSaver  	exec --no-startup-id $Locker
+
+# ScreenLock + Sleep
+bindsym 	XF86Sleep		exec --no-startup-id $Sleep
+
+# Set Display to LVDS
+bindsym		XF86Display		exec --no-startup-id xrandr --output LVDS-1 --primary --mode 1366x768 --pos 0x0 --rotate normal --output HDMI-3 --off --output HDMI-2 --off --output HDMI-1 --off --output DP-3 --off --output DP-2 --off --output DP-1 --off --output VGA-1 --off
 
 set $mode_system System (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s) Shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && sudo pm-suspend, mode "default"
-    bindsym r exec --no-startup-id sudo shutdown -r now, mode "default"
-    bindsym Shift+s exec --no-startup-id sudo shutdown -P now, mode "default"
+    bindsym 	l 	exec --no-startup-id $Locker, mode "default"
+    bindsym 	e 	exec --no-startup-id i3-msg exit, mode "default"
+    bindsym 	s 	exec --no-startup-id $Sleep, mode "default"
+    bindsym 	r 	exec --no-startup-id $Reboot, mode "default"
+    bindsym 	Shift+s exec --no-startup-id $Shutdown, mode "default"
 
     # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym 	Return 	mode "default"
+    bindsym 	Escape 	mode "default"
 }
 bindsym $mod+Shift+l mode "$mode_system"
 
+set $bg-color            #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color 	 #E53935
+
+#client.focused          	$bg-color           	$bg-color          $text-color          #00ff00
+#client.unfocused        	$inactive-bg-color 	$inactive-bg-color $inactive-text-color #00ff00
+#client.focused_inactive 	$inactive-bg-color 	$inactive-bg-color $inactive-text-color #00ff00
+#client.urgent $urgent-bg-color 	$urgent-bg-color 	$text-color #00ff00
+
 bar {
-        status_command      i3status
-        separator_symbol    " :|: "
+ 	#font pango:NotoSansMono Nerd Font 8
+ 	output LVDS-1
+	status_command i3blocks
+	separator_symbol	" | "
+	colors {
+                background 	$bg-color
+                separator 	#757575
+                #                  border             background         text
+                focused_workspace  $bg-color          $bg-color          $text-color
+                inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+                urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+	}
 }
 
 # switch to workspace
-bindsym $mod+1      workspace $ws1
-bindsym $mod+2      workspace $ws2
-bindsym $mod+3      workspace $ws3
-bindsym $mod+4      workspace $ws4
-bindsym $mod+5      workspace $ws5
-bindsym $mod+6      workspace $ws6
-bindsym $mod+7      workspace $ws7
-bindsym $mod+8      workspace $ws8
-bindsym $mod+9      workspace $ws9
-bindsym $mod+0      workspace $ws10
+bindsym 	$mod+1      workspace $ws1
+bindsym 	$mod+2      workspace $ws2
+bindsym 	$mod+3      workspace $ws3
+bindsym 	$mod+4      workspace $ws4
+bindsym 	$mod+5      workspace $ws5
+bindsym 	$mod+6      workspace $ws6
+bindsym 	$mod+7      workspace $ws7
+bindsym 	$mod+8      workspace $ws8
+bindsym 	$mod+9      workspace $ws9
+bindsym 	$mod+0      workspace $ws10
 
 # move focused container to workspace
-bindsym $mod+Shift+1    move container to workspace $ws1
-bindsym $mod+Shift+2    move container to workspace $ws2
-bindsym $mod+Shift+3    move container to workspace $ws3
-bindsym $mod+Shift+4    move container to workspace $ws4
-bindsym $mod+Shift+5    move container to workspace $ws5
-bindsym $mod+Shift+6    move container to workspace $ws6
-bindsym $mod+Shift+7    move container to workspace $ws7
-bindsym $mod+Shift+8    move container to workspace $ws8
-bindsym $mod+Shift+9    move container to workspace $ws9
-bindsym $mod+Shift+0    move container to workspace $ws10
+bindsym 	$mod+Shift+1    move container to workspace $ws1
+bindsym 	$mod+Shift+2    move container to workspace $ws2
+bindsym 	$mod+Shift+3    move container to workspace $ws3
+bindsym 	$mod+Shift+4    move container to workspace $ws4
+bindsym 	$mod+Shift+5    move container to workspace $ws5
+bindsym 	$mod+Shift+6    move container to workspace $ws6
+bindsym 	$mod+Shift+7    move container to workspace $ws7
+bindsym 	$mod+Shift+8    move container to workspace $ws8
+bindsym 	$mod+Shift+9    move container to workspace $ws9
+bindsym 	$mod+Shift+0    move container to workspace $ws10
 
 # assign
-assign [class="Firefox"] $ws2
-assign [class="Thunderbird"] $ws3
-assign [class="KeePass2"] $ws9
-assign [class="^Pidgin$"] $ws8
-assign [class="Xfce4-terminal"] $ws10
+assign [class="Firefox"] $ws1
+assign [class="Thunderbird"] $ws8
+assign [class="KeePass2"] $ws10
+assign [class="^Pidgin$"] $ws9
 
 # customize windows
 for_window [class="^.*"] border pixel 2
@@ -160,41 +194,30 @@ for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [title="Preferences$"] floating enable
-for_window [class="(?i)mplayer"] floating enable
+#for_window [class="(?i)mplayer"] floating enable
+#for_window [class="mpv"] floating enable
 for_window [class="Pinentry"] sticky enable
-for_window [class="Seafile Client"] floating enable
-for_window [class="Gpicview"] floating enable
-for_window [class="^Pidgin$" window_role="buddy_list"] layout splith, resize shrink width 0 px or 30 ppt, move right
-for_window [class="^Pidgin$" window_role="conversation"] resize grow width 0 px or 30 ppt, move left
-for_window [class="Thunar"] floating enable
-for_window [class="mpv"] floating enable
-for_window [class="Thunderbird"] floating enable
-for_window [class="Evince"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="File-roller"] floating enable
-for_window [class="Shutter"] floating enable
 for_window [class="com-sun-javaws-Main"] floating enable
-for_window [class="Gedit"] floating enable
-for_window [class="Meld"] floating enable
-for_window [class="Gnome-calculator"] floating enable
+for_window [class="Sonata"] floating enable 
 
 # Execute all stuff
 exec_always --no-startup-id xset s off
 exec_always --no-startup-id xset +dpms
 exec_always --no-startup-id xset dpms 900 1800 1800
 exec_always --no-startup-id xset r rate 200 30
-exec_always --no-startup-id setxkbmap -model thinkpad -layout de -variant nodeadkeys
-exec --no-startup-id /home/domazet/.dotfiles/bin/greenclip daemon
-exec --no-startup-id dunst
+exec --no-startup-id autocutsel -fork 
+exec --no-startup-id autocutsel -selection PRIMARY -fork
+exec --no-startup-id clipmenud
 exec --no-startup-id compton
-exec --no-startup-id numlockx on
-exec --no-startup-id volumeicon
 exec --no-startup-id nm-applet
 exec --no-startup-id hsetroot -fill ~/.local/wallpaper/wallpaper1.jpg
-exec --no-startup-id seafile-applet
-exec --no-startup-id keepass
-exec --no-startup-id pidgin
-exec --no-startup-id xautolock -time 5 -locker "$Locker"
-#exec --no-startup-id xfce4-terminal -e "/home/domazet/.dotfiles/bin/logon_log.sh"
-#exec --no-startup-id firefox-bin
-#exec --no-startup-id thunderbird-bin
+exec --no-startup-id xautolock -time 5 -locker "betterlockscreen -l"
+exec --no-startup-id xss-lock -- betterlockscreen -l
+exec --no-startup-id nextcloud
+exec --no-startup-id mpd
+exec --no-startup-id sudo rfkill block bluetooth
+exec --no-startup-id udiskie --no-automount --tray --use-udisks2
+exec --no-startup-id remmina --icon
+#exec --no-startup-id dunst

@@ -1,0 +1,130 @@
+command=~/.config/i3blocks/blocks/$BLOCK_NAME
+separator_block_width=16
+markup=pango
+
+### VPN  ###
+[vpn]
+color=#f19950
+label=
+instance=AISEC.VPN
+interval=10
+
+[vpn]
+color=#f19950
+label=
+instance=HOME.VPN
+interval=10
+
+### Ethernet ###
+[network]
+instance=enp0s25
+interval=10
+
+### WLAN ###
+[network]
+instance=wlp3s0
+interval=10
+
+### CPU ###
+#[load]
+#color=#00ff7f
+#label=
+#interval=5
+
+[cpu_usage]
+command=~/.config/i3blocks/blocks/cpu_usage -d 0 -c 90 -w 70
+color=#00ff7f
+label=
+interval=5
+
+### Memory ###
+#[memory]
+#color=#00ff7f
+#label=
+#interval=30
+
+[memory]
+color=#00ff7f
+label=
+instance=mem;perc
+interval=30
+
+### HDD ###
+#[space]
+#color=#ffff00
+#label=
+#instance=/
+#interval=30
+#
+#[space]
+#label=
+#color=#ffff00
+#instance=/home
+#interval=30
+
+### System ###
+[temperature]
+label=
+color=#dcedc1
+instance=Core
+interval=5
+
+[battery]
+instance=0
+interval=10
+
+### Multimedia ###
+[audio]
+interval=5
+
+[microphone]
+interval=5
+
+### Misc ###
+[bluetooth]
+interval=5
+
+[countdown]
+color=#d33682
+label=
+instance=tomorrow 00:00:00
+interval=30
+
+### Date ###
+[datetime]
+label=
+color=#c9c9ff
+interval=1
+
+### UNUSED ###
+###########################################################################
+#[bandwidth]
+#instance=wlp3s0;in
+#label=
+#interval=1
+#
+#[bandwidth]
+#instance=wlp3s0;out
+#label=
+#interval=1
+
+#[webcam]
+#label=
+#interval=5
+
+#[weather]
+#instance=2867714
+#interval=60
+
+#[cpu]
+#label=
+#interval=2
+
+### Window Title ###
+#[window title]
+#command=xdotool getactivewindow getwindowname
+#interval=1
+#color=#A6D1FA
+#min_width=768
+#align=center
+
