@@ -1,0 +1,26 @@
+sw_volume: 100
+audio_device_state:1:pulse audio
+state: pause
+current: 0
+time: 994.559000
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+song_begin: http://www.egofm.de/stream/192kb
+Time: 0.000000
+Title: Gizmo Varillas - Fever, Fever
+Name: egoFM - Musik wie nirgendwo sonst
+mtime: 0
+song_end
+song_begin: http://rs5.stream24.net:80/stream
+Time: 0.000000
+Title: ALLE FARBEN AND RHODES - H.O.L.Y (3)
+Name: 95.5 Charivari
+mtime: 0
+song_end
+playlist_end

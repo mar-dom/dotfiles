@@ -1,0 +1,5 @@
+#EXTM3U
+#EXTINF:-1,ego.FM
+http://www.egofm.de/stream/192kb
+#EXTINF:-1,Charivari Radio 
+http://rs5.stream24.net:80/stream

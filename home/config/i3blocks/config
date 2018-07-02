@@ -84,11 +84,11 @@ interval=5
 [bluetooth]
 interval=5
 
-[countdown]
-color=#d33682
-label=
-instance=tomorrow 00:00:00
-interval=30
+#[countdown]
+#color=#d33682
+#label=
+#instance=tomorrow 00:00:00
+#interval=30
 
 ### Date ###
 [datetime]
